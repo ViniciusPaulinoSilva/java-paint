@@ -10,9 +10,14 @@ public class Ponto extends Figura
         this (x, y, Color.BLACK);
     }
 	  
-    public Ponto (int x, int y, Color cor)
+    public Ponto (int x, int y, Color cor) throws Exception
     {
         super (cor);
+        
+        if (x < 0 || y < 0)
+        {
+            throw new Exception("A posição dos pontos devem ser positivas");
+        }
 
         this.x = x;
         this.y = y;
@@ -22,7 +27,10 @@ public class Ponto extends Figura
     {
         StringTokenizer quebrador = new StringTokenizer(s,":");
 
-        quebrador.nextToken();
+        if (quebrador.nextToken() != "p")
+        {
+            throw new Exception("String de construção de figura inválida");
+        }
 
         this.x = Integer.parseInt(quebrador.nextToken());
         this.y = Integer.parseInt(quebrador.nextToken());
@@ -32,13 +40,23 @@ public class Ponto extends Figura
                               Integer.parseInt(quebrador.nextToken())); // B
     }
 
-    public void setX (int x)
+    public void setX (int x) throws Exception
     {
+        if (x < 0)
+        {
+            throw new Exception("A posição do ponto deve ser positiva");
+        }
+
         this.x = x;
     }
 	  
-    public void setY (int y)
+    public void setY (int y) throws Exception
     {
+        if (y < 0)
+        {
+            throw new Exception("A posição do ponto deve ser positiva");
+        }
+
         this.y = y;
     }
 	  

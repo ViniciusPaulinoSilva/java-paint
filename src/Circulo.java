@@ -11,24 +11,39 @@ public class Circulo extends Figura
         this (x, y, raio, Color.BLACK);
     }
 	
-    public Circulo (int x, int y, int raio, Color cor)
+    public Circulo (int x, int y, int raio, Color cor) throws Exception
     {
         super(cor);
 
-        this.centro = new Ponto (x,y,cor);
+        if (raio <= 0)
+        {
+            throw new Exception("Raio deve ser maior que zero");
+        }
+
+        this.centro = new Ponto (x,y,cor);        
         this.raio = raio;
     }
 
-    public Circulo (String s)  // "C:x:y:raio:R:G:B"
+    public Circulo (String s) throws Exception  // "C:x:y:raio:R:G:B"
     {
-        StringTokenizer quebrador = new StringTokenizer(s,":");
-
-        quebrador.nextToken();
+        StringTokenizer quebrador = new StringTokenizer(s, ":");
+        
+        Sring tipo = quebrador.nextToken()
+        
+        if (tipo != "C" || tipo != "c")
+        {
+            throw new Exception("String de construção de figura inválida");
+        }
 
         int   x  = Integer.parseInt(quebrador.nextToken());
         int   y  = Integer.parseInt(quebrador.nextToken());
 
         int   raio  = Integer.parseInt(quebrador.nextToken());
+
+        if (raio <= 0)
+        {
+            throw new Exception("A medida do raio deve ser positiva");
+        }
 
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
@@ -49,8 +64,14 @@ public class Circulo extends Figura
         return this.centro;
     }
     
-    public void setRaio(int raio)
+    public void setRaio(int raio) throws Exception
     {
+        
+        if (raio <= 0)
+        {
+            throw new Exception("A medida do raio deve ser maior que zero");
+        }
+
 		this.raio = raio;
 	}
     
