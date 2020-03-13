@@ -24,16 +24,17 @@ public class Janela extends JFrame
     protected JLabel statusBar1 = new JLabel ("Mensagem:"),
                      statusBar2 = new JLabel ("Coordenada:");
 
-    protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio;
+    protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio, esperaInicioElipse, esperaFimElipse;
 
     protected Color corAtual = Color.BLACK;
     protected Ponto p1;
+    protected Ponto inicioElipse;
     
     protected Vector<Figura> figuras = new Vector<Figura>();
 
     public Janela ()
     {
-        super("Editor Gráfico");
+        super("Editor Gr�fico");
 
         try
         {
@@ -43,7 +44,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo ponto.jpg n�o foi encontrado",
+                                           "Arquivo ponto.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -56,7 +57,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo linha.jpg n�o foi encontrado",
+                                           "Arquivo linha.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -69,7 +70,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo circulo.jpg n�o foi encontrado",
+                                           "Arquivo circulo.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -82,7 +83,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo elipse.jpg n�o foi encontrado",
+                                           "Arquivo elipse.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -95,7 +96,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo cores.jpg n�o foi encontrado",
+                                           "Arquivo cores.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -108,7 +109,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo abrir.jpg n�o foi encontrado",
+                                           "Arquivo abrir.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -121,7 +122,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo salvar.jpg n�o foi encontrado",
+                                           "Arquivo salvar.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -134,7 +135,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo apagar.jpg n�o foi encontrado",
+                                           "Arquivo apagar.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -147,7 +148,7 @@ public class Janela extends JFrame
         catch (IOException e)
         {
             JOptionPane.showMessageDialog (null,
-                                           "Arquivo sair.jpg n�o foi encontrado",
+                                           "Arquivo sair.jpg n�o foi encontrado",
                                            "Arquivo de imagem ausente",
                                            JOptionPane.WARNING_MESSAGE);
         }
@@ -201,9 +202,9 @@ public class Janela extends JFrame
             this.addMouseMotionListener (this);
         }
 
-        public void paint(Graphics g)
+        public void paint (Graphics g)
         {
-            for (int i = 0; i < figuras.size(); i++)
+            for (int i=0 ; i<figuras.size(); i++)
                 figuras.get(i).torneSeVisivel(g);
         }
         
@@ -211,36 +212,17 @@ public class Janela extends JFrame
         {
             if (esperaPonto)
             {
-				try
-				{
-					figuras.add(new Ponto(e.getX(), e.getY(), corAtual));
-					figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
-					esperaPonto = false;
-				}
-				catch (Exception ex)
-				{
-					JOptionPane.showMessageDialog (null,
-                                           "Valores inválidos",
-                                           "Erro na criação de figura",
-                                           JOptionPane.WARNING_MESSAGE);
-				}
+                figuras.add (new Ponto (e.getX(), e.getY(), corAtual));
+                figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+                esperaPonto = false;
             }
             else
                 if (esperaInicioReta)
                 {
-					try
-					{
-						p1 = new Ponto(e.getX(), e.getY(), corAtual);
-						esperaInicioReta = false;
-						esperaFimReta = true;
-						statusBar1.setText("Mensagem: clique o ponto final da reta");
-					} catch (Exception ex)
-					{
-						JOptionPane.showMessageDialog (null,
-                                           "Valores inválidos",
-                                           "Erro na criação de figura",
-                                           JOptionPane.WARNING_MESSAGE);
-					}
+                    p1 = new Ponto (e.getX(), e.getY(), corAtual);
+                    esperaInicioReta = false;
+                    esperaFimReta = true;
+                    statusBar1.setText("Mensagem: clique o ponto final da reta");    
                  }
                  else
                     if (esperaFimReta)
@@ -254,19 +236,10 @@ public class Janela extends JFrame
                     else
 					   if (esperaCentro)
 					   {
-						   try
-						   {
-							   p1 = new Ponto (e.getX(), e.getY(), corAtual);
-							   esperaCentro = false;
-							   esperaRaio = true;
-							   statusBar1.setText("Mensagem: clique a extremidade do circulo");
-						   } catch(Exception ex)
-						   {
-								JOptionPane.showMessageDialog (null,
-													   "Valores inválidos",
-													   "Erro na criação de figura",
-													   JOptionPane.WARNING_MESSAGE);
-						   }
+						   p1 = new Ponto (e.getX(), e.getY(), corAtual);
+						   esperaCentro = false;
+						   esperaRaio = true;
+						   statusBar1.setText("Mensagem: clique a extremidade do circulo");   
 					   }
 					   else
 					      if (esperaRaio)
@@ -275,19 +248,31 @@ public class Janela extends JFrame
 							  int altura = e.getY() - p1.getY();
 							  int largura = e.getX() - p1.getX();
 							  int raio = (int)Math.round(Math.sqrt((altura * altura) + (largura * largura)));
-							  try
-							  {
-								  figuras.add(new Circulo(p1.getX(), p1.getY(), raio));
-								  figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-								  statusBar1.setText("Mensagem: ");
-							  } catch(Exception ex)
-							  {
-									JOptionPane.showMessageDialog (null,
-													   "Valores inválidos",
-													   "Erro na criação de figura",
-													   JOptionPane.WARNING_MESSAGE);
+							  figuras.add(new Circulo(p1.getX(), p1.getY(), raio));
+							  figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+							  statusBar1.setText("Mensagem: ");
+						 }
+						 else
+							if(esperaInicioElipse)
+							{	
+								
+								inicioElipse = new Ponto (e.getX(), e.getY(), corAtual);
+								esperaInicioElipse = false;
+								esperaFimElipse = true;
+								statusBar1.setText("Mensagem: Clique no ponto inferior direito da elipse");
+							} 
+							else
+								if(esperaFimElipse)
+								{	
+									
+									Ponto fim = new Ponto (e.getX(), e.getY(), corAtual);
+									esperaFimElipse = false;
+									int largura = Math.abs(inicioElipse.getX() - fim.getX());
+                                    int altura = Math.abs(inicioElipse.getY() - fim.getY());
+									figuras.add(new Elipse(inicioElipse,altura, largura));
+							        figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+							        statusBar1.setText("Mensagem: ");
 								}
-						  }
         }
         
         public void mouseReleased (MouseEvent e)
@@ -315,9 +300,9 @@ public class Janela extends JFrame
     {
           public void actionPerformed (ActionEvent e)    
           {
-              esperaPonto = true;
+              esperaPonto      = true;
               esperaInicioReta = false;
-              esperaFimReta = false;
+              esperaFimReta    = false;
 			  esperaCentro = false;
 			  esperaRaio = false;
 
@@ -329,9 +314,9 @@ public class Janela extends JFrame
     {
         public void actionPerformed (ActionEvent e)    
         {
-            esperaPonto = false;
+            esperaPonto      = false;
             esperaInicioReta = true;
-            esperaFimReta = false;
+            esperaFimReta    = false;
             esperaCentro = false;
             esperaRaio = false;
 
@@ -349,7 +334,22 @@ public class Janela extends JFrame
             esperaCentro = true;
             esperaRaio = false;
 
-            statusBar1.setText("Mensagem: clique o ponto central do c�rculo");
+            statusBar1.setText("Mensagem: clique o ponto central do c�rculo");
+        }
+    }
+    protected class DesenhoDeElipse implements ActionListener
+    {
+        public void actionPerformed (ActionEvent e)    
+        {
+            esperaPonto = false;
+            esperaInicioReta = false;
+            esperaFimReta = false;
+            esperaCentro = false;
+            esperaRaio = false;
+            esperaInicioElipse = true;
+            esperaFimElipse = false;
+
+            statusBar1.setText("Mensagem: clique no canto superior esquerdo da elipse");
         }
     }
 
