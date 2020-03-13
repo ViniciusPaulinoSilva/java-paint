@@ -211,17 +211,36 @@ public class Janela extends JFrame
         {
             if (esperaPonto)
             {
-                figuras.add(new Ponto(e.getX(), e.getY(), corAtual));
-                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
-                esperaPonto = false;
+				try
+				{
+					figuras.add(new Ponto(e.getX(), e.getY(), corAtual));
+					figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+					esperaPonto = false;
+				}
+				catch (Exception ex)
+				{
+					JOptionPane.showMessageDialog (null,
+                                           "Valores inválidos",
+                                           "Erro na criação de figura",
+                                           JOptionPane.WARNING_MESSAGE);
+				}
             }
             else
                 if (esperaInicioReta)
                 {
-                    p1 = new Ponto(e.getX(), e.getY(), corAtual);
-                    esperaInicioReta = false;
-                    esperaFimReta = true;
-                    statusBar1.setText("Mensagem: clique o ponto final da reta");    
+					try
+					{
+						p1 = new Ponto(e.getX(), e.getY(), corAtual);
+						esperaInicioReta = false;
+						esperaFimReta = true;
+						statusBar1.setText("Mensagem: clique o ponto final da reta");
+					} catch (Exception ex)
+					{
+						JOptionPane.showMessageDialog (null,
+                                           "Valores inválidos",
+                                           "Erro na criação de figura",
+                                           JOptionPane.WARNING_MESSAGE);
+					}
                  }
                  else
                     if (esperaFimReta)
@@ -235,10 +254,19 @@ public class Janela extends JFrame
                     else
 					   if (esperaCentro)
 					   {
-						   p1 = new Ponto (e.getX(), e.getY(), corAtual);
-						   esperaCentro = false;
-						   esperaRaio = true;
-						   statusBar1.setText("Mensagem: clique a extremidade do circulo");   
+						   try
+						   {
+							   p1 = new Ponto (e.getX(), e.getY(), corAtual);
+							   esperaCentro = false;
+							   esperaRaio = true;
+							   statusBar1.setText("Mensagem: clique a extremidade do circulo");
+						   } catch(Exception ex)
+						   {
+								JOptionPane.showMessageDialog (null,
+													   "Valores inválidos",
+													   "Erro na criação de figura",
+													   JOptionPane.WARNING_MESSAGE);
+						   }
 					   }
 					   else
 					      if (esperaRaio)
@@ -247,9 +275,18 @@ public class Janela extends JFrame
 							  int altura = e.getY() - p1.getY();
 							  int largura = e.getX() - p1.getX();
 							  int raio = (int)Math.round(Math.sqrt((altura * altura) + (largura * largura)));
-							  figuras.add(new Circulo(p1.getX(), p1.getY(), raio));
-							  figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
-							  statusBar1.setText("Mensagem: ");
+							  try
+							  {
+								  figuras.add(new Circulo(p1.getX(), p1.getY(), raio));
+								  figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
+								  statusBar1.setText("Mensagem: ");
+							  } catch(Exception ex)
+							  {
+									JOptionPane.showMessageDialog (null,
+													   "Valores inválidos",
+													   "Erro na criação de figura",
+													   JOptionPane.WARNING_MESSAGE);
+								}
 						  }
         }
         

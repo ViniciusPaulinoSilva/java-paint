@@ -5,7 +5,7 @@ public class Ponto extends Figura
 {
     protected int x,  y;
 
-    public Ponto (int x, int y)
+    public Ponto (int x, int y) throws Exception
     {
         this (x, y, Color.BLACK);
     }
@@ -23,7 +23,7 @@ public class Ponto extends Figura
         this.y = y;
     }
 
-    public Ponto (String s)
+    public Ponto (String s) throws Exception
     {
         StringTokenizer quebrador = new StringTokenizer(s,":");
 

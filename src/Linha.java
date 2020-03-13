@@ -13,9 +13,16 @@ public class Linha extends Figura
     public Linha (int x1, int y1, int x2, int y2, Color cor)
     {
         super(cor);
-
-        this.p1 = new Ponto (x1,y1,cor);
-        this.p2 = new Ponto (x2,y2,cor);
+		
+		try
+		{
+			this.p1 = new Ponto (x1,y1,cor);
+			this.p2 = new Ponto (x2,y2,cor);
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
     }
 
     public Linha (String s)
@@ -33,20 +40,41 @@ public class Linha extends Figura
         Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
                                Integer.parseInt(quebrador.nextToken()),  // G
                                Integer.parseInt(quebrador.nextToken())); // B
-
-        this.p1  = new Ponto (x1,y1,cor);
-        this.p2  = new Ponto (x2,y2,cor);
+		
+		try
+		{
+			this.p1 = new Ponto (x1,y1,cor);
+			this.p2 = new Ponto (x2,y2,cor);
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
         this.cor = cor;
     }
 
     public void setP1 (int x, int y)
     {
-        this.p1 = new Ponto (x,y,this.getCor());
+		try
+		{
+			this.p1 = new Ponto (x,y,this.getCor());
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
     }
 
     public void setP2 (int x, int y)
     {
-        this.p2 = new Ponto (x,y,this.getCor());
+		try
+		{
+			this.p2 = new Ponto (x,y,this.getCor());
+		}
+		catch (Exception ex)
+		{
+			System.out.println(ex);
+		}
     }
 
     public Ponto getP1 ()

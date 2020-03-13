@@ -6,9 +6,9 @@ public class Circulo extends Figura
     protected Ponto centro;
     protected int raio;
     
-    public Circulo (int x, int y, int raio)
+    public Circulo (int x, int y, int raio) throws Exception
     {
-        this (x, y, raio, Color.BLACK);
+		this (x, y, raio, Color.BLACK);
     }
 	
     public Circulo (int x, int y, int raio, Color cor) throws Exception
@@ -28,7 +28,7 @@ public class Circulo extends Figura
     {
         StringTokenizer quebrador = new StringTokenizer(s, ":");
         
-        Sring tipo = quebrador.nextToken()
+        String tipo = quebrador.nextToken();
         
         if (tipo != "C" || tipo != "c")
         {
@@ -56,7 +56,14 @@ public class Circulo extends Figura
 
     public void setCentro (int x, int y)
     {
-        this.centro = new Ponto (x,y,this.getCor());
+		try
+		{
+			this.centro = new Ponto (x,y,this.getCor());
+		}
+        catch(Exception ex)
+        {
+			System.out.println(ex);
+		}
     }
 
     public Ponto getCentro()
