@@ -1,4 +1,7 @@
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+
 import java.awt.*;
+import java.io.IOException;
 import java.util.*;
  
 public class Elipse extends Figura
@@ -28,18 +31,27 @@ public class Elipse extends Figura
 
         quebrador.nextToken();
 
-		int	iniciox  = Integer.parseInt(quebrador.nextToken());
-        int inicioy  = Integer.parseInt(quebrador.nextToken());
-        int fimx  = Integer.parseInt(quebrador.nextToken());
-        int fimy  = Integer.parseInt(quebrador.nextToken());
+		int	iniciox = Integer.parseInt(quebrador.nextToken());
+        int inicioy = Integer.parseInt(quebrador.nextToken());
+        int fimx = Integer.parseInt(quebrador.nextToken());
+        int fimy = Integer.parseInt(quebrador.nextToken());
         
-        Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
-                               Integer.parseInt(quebrador.nextToken()),  // G
-                               Integer.parseInt(quebrador.nextToken())); // B
+        Color cor = new Color (
+            Integer.parseInt(quebrador.nextToken()),  // R
+            Integer.parseInt(quebrador.nextToken()),  // G
+            Integer.parseInt(quebrador.nextToken())   // B
+        );
+        try
+        {
+          this.inicio = new Ponto (iniciox, inicioy);
+          this.fim = new Ponto (fimx, fimy);
+          this.cor = cor;
+        }
+        catch (Exception e)
+        {
+          System.out.println(e.getMessage());
+        }
 
-        this.inicio = new Ponto (iniciox, inicioy);
-        this.fim = new Ponto (fimx, fimy);
-        this.cor = cor;
     }
     
     public void setinicio(Ponto inicio)
@@ -61,11 +73,11 @@ public class Elipse extends Figura
 		return this.fim;
 	}
 
-    public void torneSeVisivel (Graphics g)
+    public void torneSeVisivel(Graphics g)
     {
         g.setColor(this.cor);
-        //this.altura = Math.abs(this.inicio.getX() - this.fim.getX());
-        //this.largura = Math.abs(this.inicio.getY() - this.fim.getY());
+//        this.altura = Math.abs(this.inicio.getX() - this.fim.getX());
+//        this.largura = Math.abs(this.inicio.getY() - this.fim.getY());
         g.drawOval(inicio.getX(), inicio.getY(), altura , largura);
     }
 
