@@ -48,20 +48,20 @@ public class Linha extends Figura
 		}
 		catch (Exception ex)
 		{
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
-        this.cor = cor;
+        this.corContorno = cor;
     }
 
     public void setP1 (int x, int y)
     {
 		try
 		{
-			this.p1 = new Ponto (x,y,this.getCor());
+			this.p1 = new Ponto (x,y,this.getCorContorno());
 		}
 		catch (Exception ex)
 		{
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
     }
 
@@ -69,11 +69,11 @@ public class Linha extends Figura
     {
 		try
 		{
-			this.p2 = new Ponto (x,y,this.getCor());
+			this.p2 = new Ponto (x,y,this.getCorContorno());
 		}
 		catch (Exception ex)
 		{
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
     }
 
@@ -89,7 +89,7 @@ public class Linha extends Figura
 
     public void torneSeVisivel (Graphics g)
     {
-        g.setColor(this.cor);
+        g.setColor(this.corContorno);
         g.drawLine(this.p1.getX(), this.p1.getY(),   // ponto inicial
                    this.p2.getX(), this.p2.getY());  // ponto final
     }
@@ -105,10 +105,10 @@ public class Linha extends Figura
                ":" +
                this.p2.getY() +
                ":" +
-               this.getCor().getRed() +
+               this.getCorContorno().getRed() +
                ":" +
-               this.getCor().getGreen() +
+               this.getCorContorno().getGreen() +
                ":" +
-               this.getCor().getBlue();
+               this.getCorContorno().getBlue();
     }
 }

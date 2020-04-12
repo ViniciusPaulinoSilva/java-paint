@@ -13,7 +13,8 @@ public class Janela extends JFrame
           btnLinha = new JButton ("Linha"),
           btnCirculo = new JButton ("Circulo"),
           btnElipse = new JButton ("Elipse"),
-          btnCores = new JButton ("Cores"),
+          btnCorContorno = new JButton ("Contorno"),
+          btnCorPreenchimento = new JButton ("Preenchimento"),
           btnAbrir = new JButton ("Abrir"),
           btnSalvar = new JButton ("Salvar"),
           btnApagar = new JButton ("Apagar"),
@@ -21,33 +22,32 @@ public class Janela extends JFrame
 
   protected MeuJPanel pnlDesenho = new MeuJPanel ();
 
-  protected JLabel statusBar1 = new JLabel ("Mensagem:"),
-          statusBar2 = new JLabel ("Coordenada:");
+  protected JLabel statusBar1 = new JLabel ("Mensagem:"), statusBar2 = new JLabel ("Coordenada:");
 
-  protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro,
-          esperaRaio, esperaInicioElipse, esperaFimElipse;
+  protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio,
+          esperaInicioElipse, esperaFimElipse;
+  protected Color corContorno = Color.BLACK, corPreenchimento = Color.BLACK;
 
-  protected Color corAtual = Color.BLACK;
   protected Ponto p1;
   protected Ponto inicioElipse;
 
   protected Vector<Figura> figuras = new Vector<Figura>();
 
-  public Janela ()
+  public Janela()
   {
     super("Editor Gráfico");
     try
     {
-      Image btnPontoImg = ImageIO.read(getClass().getResource("resources/ponto.jpg"));
+      Image btnPontoImg = ImageIO.read(this.getClass().getResource("resources/ponto.jpg"));
       btnPonto.setIcon(new ImageIcon(btnPontoImg));
     }
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo ponto.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo ponto.jpg não foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -59,10 +59,10 @@ public class Janela extends JFrame
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo linha.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo linha.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -74,10 +74,10 @@ public class Janela extends JFrame
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo circulo.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo circulo.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -89,25 +89,26 @@ public class Janela extends JFrame
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo elipse.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo elipse.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
     try
     {
-      Image btnCoresImg = ImageIO.read(getClass().getResource("resources/cores.jpg"));
-      btnCores.setIcon(new ImageIcon(btnCoresImg));
+      Image btnCorImg = ImageIO.read(getClass().getResource("resources/cores.jpg"));
+      btnCorContorno.setIcon(new ImageIcon(btnCorImg));
+      btnCorPreenchimento.setIcon(new ImageIcon(btnCorImg));
     }
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo cores.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo cores.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -119,10 +120,10 @@ public class Janela extends JFrame
     catch (IOException e)
     {
       JOptionPane.showMessageDialog (
-              null,
-              "Arquivo abrir.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo abrir.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -174,6 +175,8 @@ public class Janela extends JFrame
     btnPonto.addActionListener(new DesenhoDePonto());
     btnLinha.addActionListener(new DesenhoDeReta());
     btnCirculo.addActionListener(new DesenhoDeCirculo());
+    btnCorContorno.addActionListener(new EscolheCorContorno());
+    btnCorPreenchimento.addActionListener(new EscolheCorPreenchimento());
 
     JPanel pnlBotoes = new JPanel();
     FlowLayout flwBotoes = new FlowLayout();
@@ -185,7 +188,8 @@ public class Janela extends JFrame
     pnlBotoes.add(btnLinha);
     pnlBotoes.add(btnCirculo);
     pnlBotoes.add(btnElipse);
-    pnlBotoes.add(btnCores);
+    pnlBotoes.add(btnCorContorno);
+    pnlBotoes.add(btnCorPreenchimento);
     pnlBotoes.add(btnApagar);
     pnlBotoes.add(btnSair);
 
@@ -220,8 +224,7 @@ public class Janela extends JFrame
 
     public void paint(Graphics g)
     {
-      for (int i=0 ; i<figuras.size(); i++)
-        figuras.get(i).torneSeVisivel(g);
+      for (Figura figura : figuras) figura.torneSeVisivel(g);
     }
 
     public void mousePressed(MouseEvent e)
@@ -230,7 +233,7 @@ public class Janela extends JFrame
       {
         try
         {
-          figuras.add (new Ponto (e.getX(), e.getY(), corAtual));
+          figuras.add (new Ponto (e.getX(), e.getY(), corContorno));
         }
         catch (Exception ex)
         {
@@ -242,7 +245,7 @@ public class Janela extends JFrame
       else if (esperaInicioReta)
       {
         try {
-          p1 = new Ponto(e.getX(), e.getY(), corAtual);
+          p1 = new Ponto(e.getX(), e.getY(), corContorno);
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
@@ -254,16 +257,15 @@ public class Janela extends JFrame
       }
       else if (esperaFimReta)
       {
-        esperaInicioReta = false;
         esperaFimReta = false;
-        figuras.add (new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corAtual));
+        figuras.add (new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corContorno));
         figuras.get(figuras.size()-1).torneSeVisivel(pnlDesenho.getGraphics());
         statusBar1.setText("Mensagem:");
       }
       else if (esperaCentro)
       {
         try {
-          p1 = new Ponto (e.getX(), e.getY(), corAtual);
+          p1 = new Ponto (e.getX(), e.getY(), corContorno);
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
@@ -279,7 +281,7 @@ public class Janela extends JFrame
         int largura = e.getX() - p1.getX();
         int raio = (int)Math.round(Math.sqrt((altura * altura) + (largura * largura)));
         try {
-          figuras.add(new Circulo(p1.getX(), p1.getY(), raio));
+          figuras.add(new Circulo(p1.getX(), p1.getY(), raio, corContorno, corPreenchimento));
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
@@ -290,7 +292,7 @@ public class Janela extends JFrame
       else if(esperaInicioElipse)
       {
         try {
-          inicioElipse = new Ponto (e.getX(), e.getY(), corAtual);
+          inicioElipse = new Ponto (e.getX(), e.getY(), corContorno);
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
@@ -302,7 +304,7 @@ public class Janela extends JFrame
       else if(esperaFimElipse)
       {
         try {
-          Ponto fim = new Ponto (e.getX(), e.getY(), corAtual);
+          Ponto fim = new Ponto (e.getX(), e.getY(), corContorno);
           esperaFimElipse = false;
           int largura = Math.abs(inicioElipse.getX() - fim.getX());
           int altura = Math.abs(inicioElipse.getY() - fim.getY());
@@ -392,6 +394,40 @@ public class Janela extends JFrame
       esperaFimElipse = false;
 
       statusBar1.setText("Mensagem: clique no canto superior esquerdo da elipse");
+    }
+  }
+
+  protected class EscolheCorContorno implements ActionListener
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      Color novaCorContorno = JColorChooser.showDialog(
+        null,
+        "Selecione a cor para o contorno",
+        Color.BLACK
+      );
+
+      if (novaCorContorno != null)
+      {
+        corContorno = novaCorContorno;
+      }
+    }
+  }
+
+  protected class EscolheCorPreenchimento implements  ActionListener
+  {
+    public void actionPerformed(ActionEvent e)
+    {
+      Color novaCorPreenchimento = JColorChooser.showDialog(
+              null,
+              "Selecione a cor para o contorno",
+              Color.BLACK
+      );
+
+      if (novaCorPreenchimento != null)
+      {
+        corPreenchimento = novaCorPreenchimento;
+      }
     }
   }
 

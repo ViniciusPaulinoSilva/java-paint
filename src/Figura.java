@@ -2,31 +2,48 @@ import java.awt.*;
 
 public abstract class Figura
 {
-  protected Color cor;
+  protected Color corContorno, corPreenchimento;
 
-  protected Figura ()
+  protected Figura()
   {
-    this (Color.BLACK);
+    this (Color.BLACK, new Color(0, 0, 0, 0));
   }
 
-  protected Figura (Color cor)
+  protected Figura(Color corContorno)
   {
-    this.cor = cor;
+    this.corContorno = corContorno;
+    this.corPreenchimento = new Color(0, 0, 0, 0);
   }
 
-  public void setCor (Color cor)
+  protected Figura(Color corContorno, Color corPreenchimento)
   {
-    this.cor = cor;
+    this.corContorno = corContorno;
+    this.corPreenchimento = corPreenchimento;
   }
 
-  public Color getCor()
+  public void setCorContorno(Color cor)
   {
-    return this.cor;
+    this.corContorno = cor;
   }
 
-  //public abstract boolean equals         (Object obj);
-  //public abstract int     hashCode       ();
-  //public abstract Object  clone          ();
+  public void setCorPreenchimento(Color cor)
+  {
+    this.corPreenchimento = cor;
+  }
+
+  public Color getCorContorno()
+  {
+    return this.corContorno;
+  }
+
+  public Color getCorPreenchimento()
+  {
+    return this.corPreenchimento;
+  }
+
+  //public abstract boolean equals(Object obj);
+  //public abstract int hashCode();
+  //public abstract Object clone();
   public abstract String toString();
   public abstract void torneSeVisivel(Graphics g);
 }
