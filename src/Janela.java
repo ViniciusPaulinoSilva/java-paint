@@ -7,8 +7,6 @@ import java.util.*;
 
 public class Janela extends JFrame
 {
-  protected static final long serialVersionUID = 1L;
-
   protected JButton btnPonto = new JButton ("Ponto"),
           btnLinha = new JButton ("Linha"),
           btnCirculo = new JButton ("Circulo"),
@@ -22,11 +20,12 @@ public class Janela extends JFrame
 
   protected MeuJPanel pnlDesenho = new MeuJPanel ();
 
-  protected JLabel statusBar1 = new JLabel ("Mensagem:"), statusBar2 = new JLabel ("Coordenada:");
+  protected JLabel statusBar1 = new JLabel ("Mensagem:");
+  protected JLabel statusBar2 = new JLabel ("Coordenada:");
 
   protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio,
           esperaInicioElipse, esperaFimElipse;
-  protected Color corContorno = Color.BLACK, corPreenchimento = Color.BLACK;
+  protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);;
 
   protected Ponto p1;
   protected Ponto inicioElipse;
@@ -208,7 +207,7 @@ public class Janela extends JFrame
 
     this.addWindowListener(new FechamentoDeJanela());
 
-    this.setSize(700,500);
+    this.setSize(1000,500);
     this.setVisible(true);
   }
 

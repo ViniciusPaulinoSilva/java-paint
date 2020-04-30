@@ -103,7 +103,6 @@ public class Circulo extends Figura
 
   public void torneSeVisivel (Graphics g)
   {
-    System.out.println(this.corPreenchimento);
     int x = this.centro.getX() - this.raio;
     int y = this.centro.getY() - this.raio;
     g.setColor(this.corPreenchimento);
