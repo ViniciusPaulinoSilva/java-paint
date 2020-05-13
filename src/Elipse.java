@@ -63,7 +63,6 @@ public class Elipse extends Figura
     {
       System.out.println(e.getMessage());
     }
-
   }
 
   public void setInicio(int x, int y)
@@ -104,8 +103,8 @@ public class Elipse extends Figura
     Ponto inicio = this.inicio;
     Ponto fim = this.fim;
     g.setColor(this.corPreenchimento);
-        this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
-        this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
+    this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
+    this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
     g.fillOval(inicio.getX(), largura, inicio.getY() , altura);
     g.setColor(this.corContorno);
     this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
