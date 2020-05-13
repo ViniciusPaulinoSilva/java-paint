@@ -8,19 +8,26 @@ public class Elipse extends Figura
   protected int largura;
   protected int altura;
 
-  public Elipse(Ponto inicio, Ponto fim, int altura, int largura, Color corContorno, Color corPreenchimento)
+  public Elipse(Ponto inicio, Ponto fim, int altura, int largura) throws Exception
   {
-    this (inicio, fim, altura, largura, Color.BLACK);
+    this (inicio, fim, altura, largura, Color.BLACK,  new Color(0, 0, 0, 0));
   }
 
-  public Elipse (Ponto inicio , Ponto fim, int altura, int largura, Color cor)
+  public Elipse(Ponto inicio, Ponto fim, int altura, int largura, Color corContorno) throws Exception
   {
-    super(cor);
+    this (inicio, fim, altura, largura, Color.BLACK, new Color( 0,0,0,0));
+  }
+
+  public Elipse (Ponto inicio , Ponto fim, int altura, int largura, Color corContorno, Color corPreenchimento) throws Exception
+  {
+    super(corContorno, corPreenchimento);
 
     this.fim = fim;
     this.inicio = inicio;
     this.altura = altura;
     this.largura = largura;
+    this.corContorno = corContorno;
+    this.corPreenchimento = corPreenchimento;
   }
 
   public Elipse (String s)  // "E:Inicio.x:Inicio.y:Fim.x:Fim.Y::R:G:B"
@@ -39,12 +46,18 @@ public class Elipse extends Figura
       Integer.parseInt(quebrador.nextToken()),  // G
       Integer.parseInt(quebrador.nextToken())   // B
     );
+    Color corPreenchimento = new Color (
+            Integer.parseInt(quebrador.nextToken()),  // R
+            Integer.parseInt(quebrador.nextToken()),  // G
+            Integer.parseInt(quebrador.nextToken())   // B
+    );
 
     try
     {
       this.inicio = new Ponto (iniciox, inicioy);
       this.fim = new Ponto (fimx, fimy);
       this.corContorno = corContorno;
+      this.corPreenchimento = corPreenchimento;
     }
     catch (Exception e)
     {
@@ -53,13 +66,27 @@ public class Elipse extends Figura
 
   }
 
-  public void setInicio(Ponto inicio)
+  public void setInicio(int x, int y)
   {
-    this.inicio = inicio;
+    try
+    {
+      this.inicio = new Ponto (x,y,this.getCorContorno());
+    }
+    catch(Exception ex)
+    {
+      System.out.println(ex.getMessage());
+    }
   }
-  public void setFim(Ponto fim)
+  public void setFim(int x, int y)
   {
-    this.fim = fim;
+    try
+    {
+      this.fim = new Ponto (x,y,this.getCorContorno());
+    }
+    catch(Exception ex)
+    {
+      System.out.println(ex.getMessage());
+    }
   }
 
   public Ponto getInicio()
@@ -76,10 +103,15 @@ public class Elipse extends Figura
   {
     Ponto inicio = this.inicio;
     Ponto fim = this.fim;
-    g.setColor(this.corContorno);
+    g.setColor(this.corPreenchimento);
         this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
         this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
+    g.fillOval(inicio.getX(), largura, inicio.getY() , altura);
+    g.setColor(this.corContorno);
+    this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
+    this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
     g.drawOval(inicio.getX(), largura, inicio.getY() , altura);
+
   }
 
   public String toString()
@@ -97,7 +129,13 @@ public class Elipse extends Figura
             ":" +
             this.getCorContorno().getGreen() +
             ":" +
-            this.getCorContorno().getBlue();
+            this.getCorContorno().getBlue() +
+            ":" +
+            this.getCorPreenchimento().getRed() +
+            ":" +
+            this.getCorPreenchimento().getGreen() +
+            ":" +
+            this.getCorPreenchimento().getBlue();
   }
 }
 
