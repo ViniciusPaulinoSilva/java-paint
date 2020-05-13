@@ -1,8 +1,5 @@
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
-
 import java.awt.*;
-import java.io.IOException;
-import java.util.*;
+import java.util.StringTokenizer;
 
 public class Elipse extends Figura
 {
@@ -11,15 +8,16 @@ public class Elipse extends Figura
   protected int largura;
   protected int altura;
 
-  public Elipse(Ponto inicio, int altura, int largura)
+  public Elipse(Ponto inicio, Ponto fim, int altura, int largura, Color corContorno, Color corPreenchimento)
   {
-    this (inicio, altura, largura, Color.BLACK);
+    this (inicio, fim, altura, largura, Color.BLACK);
   }
 
-  public Elipse (Ponto inicio , int altura, int largura, Color cor)
+  public Elipse (Ponto inicio , Ponto fim, int altura, int largura, Color cor)
   {
     super(cor);
 
+    this.fim = fim;
     this.inicio = inicio;
     this.altura = altura;
     this.largura = largura;
@@ -55,11 +53,11 @@ public class Elipse extends Figura
 
   }
 
-  public void setinicio(Ponto inicio)
+  public void setInicio(Ponto inicio)
   {
     this.inicio = inicio;
   }
-  public void fim(Ponto fim)
+  public void setFim(Ponto fim)
   {
     this.fim = fim;
   }
@@ -76,10 +74,12 @@ public class Elipse extends Figura
 
   public void torneSeVisivel(Graphics g)
   {
+    Ponto inicio = this.inicio;
+    Ponto fim = this.fim;
     g.setColor(this.corContorno);
-//        this.altura = Math.abs(this.inicio.getX() - this.fim.getX());
-//        this.largura = Math.abs(this.inicio.getY() - this.fim.getY());
-    g.drawOval(inicio.getX(), inicio.getY(), altura , largura);
+        this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
+        this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
+    g.drawOval(inicio.getX(), largura, inicio.getY() , altura);
   }
 
   public String toString()

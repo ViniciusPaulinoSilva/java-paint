@@ -25,12 +25,13 @@ public class Janela extends JFrame
 
   protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio,
           esperaInicioElipse, esperaFimElipse;
-  protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);;
+  protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);
 
   protected Ponto p1;
   protected Ponto inicioElipse;
+  protected Ponto fimElipse;
 
-  protected Vector<Figura> figuras = new Vector<Figura>();
+  protected Vector<Figura> figuras = new Vector<>();
 
   public Janela()
   {
@@ -176,6 +177,7 @@ public class Janela extends JFrame
     btnCirculo.addActionListener(new DesenhoDeCirculo());
     btnCorContorno.addActionListener(new EscolheCorContorno());
     btnCorPreenchimento.addActionListener(new EscolheCorPreenchimento());
+    btnElipse.addActionListener(new DesenhoDeElipse());
 
     JPanel pnlBotoes = new JPanel();
     FlowLayout flwBotoes = new FlowLayout();
@@ -303,11 +305,11 @@ public class Janela extends JFrame
       else if(esperaFimElipse)
       {
         try {
-          Ponto fim = new Ponto (e.getX(), e.getY(), corContorno);
+          fimElipse = new Ponto (e.getX(), e.getY(), corContorno);
           esperaFimElipse = false;
-          int largura = Math.abs(inicioElipse.getX() - fim.getX());
-          int altura = Math.abs(inicioElipse.getY() - fim.getY());
-          figuras.add(new Elipse(inicioElipse,altura, largura));
+          int largura = Math.abs(inicioElipse.getX() - fimElipse.getX());
+          int altura = Math.abs(inicioElipse.getY() - fimElipse.getY());
+          figuras.add(new Elipse(inicioElipse, fimElipse, largura, altura, corContorno, corPreenchimento));
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
