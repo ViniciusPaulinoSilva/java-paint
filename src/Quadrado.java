@@ -1,7 +1,8 @@
 import java.awt.*;
 import java.util.StringTokenizer;
 
-public class Quadrado extends Figura {
+public class Quadrado extends Figura
+{
     protected Ponto inicio; //inicio do quadrado, extremidade superior
     protected Ponto fim; //ponto base do quadrado, extremidade inferior
     protected int lado;
@@ -9,7 +10,6 @@ public class Quadrado extends Figura {
     public Quadrado(Ponto inicio, Ponto fim, int lado) throws Exception
     {
         this(inicio, fim, lado, Color.BLACK, new Color(0, 0, 0, 0));
-
     }
 
     public Quadrado(Ponto inicio, Ponto fim, int lado, Color corContorno) throws Exception
@@ -57,6 +57,7 @@ public class Quadrado extends Figura {
             this.corContorno = corContorno;
             this.corPreenchimento = corPreenchimento;
         }
+
         catch (Exception e)
         {
             System.out.println(e.getMessage());
@@ -69,6 +70,7 @@ public class Quadrado extends Figura {
         {
             this.inicio = new Ponto (x,y,this.getCorContorno());
         }
+
         catch(Exception ex)
         {
             System.out.println(ex.getMessage());
@@ -81,6 +83,7 @@ public class Quadrado extends Figura {
         {
             this.fim = new Ponto (x,y,this.getCorContorno());
         }
+
         catch(Exception ex)
         {
             System.out.println(ex.getMessage());
