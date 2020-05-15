@@ -1,9 +1,12 @@
+import say.swing.JFontChooser;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.*;
+import java.awt.Font;
 
 public class Janela extends JFrame
 {
@@ -14,6 +17,7 @@ public class Janela extends JFrame
           btnQuadrado = new JButton("Quadrado"),
           btnRetangulo = new JButton("Retangulo"),
           btnPoligono = new JButton("Polígono"),
+          btnTexto = new JButton("Texto"),
           btnCorContorno = new JButton ("Contorno"),
           btnCorPreenchimento = new JButton ("Preenchimento"),
           btnAbrir = new JButton ("Abrir"),
@@ -140,7 +144,7 @@ public class Janela extends JFrame
 
     try
     {
-      Image btnPoligonoImg = ImageIO.read(getClass().getResource("resources/poligno.jpg"));
+      Image btnPoligonoImg = ImageIO.read(getClass().getResource("resources/poligono.jpg"));
       btnPoligono.setIcon(new ImageIcon(btnPoligonoImg));
     }
     catch (IOException e)
@@ -148,6 +152,21 @@ public class Janela extends JFrame
       JOptionPane.showMessageDialog (
               null,
               "Arquivo poligono.jpg n�o foi encontrado",
+              "Arquivo de imagem ausente",
+              JOptionPane.WARNING_MESSAGE
+      );
+    }
+
+    try
+    {
+      Image btnTextoImg = ImageIO.read(getClass().getResource("resources/texto.jpg"));
+      btnTexto.setIcon(new ImageIcon(btnTextoImg));
+    }
+    catch (IOException e)
+    {
+      JOptionPane.showMessageDialog (
+              null,
+              "Arquivo texto.jpg n�o foi encontrado",
               "Arquivo de imagem ausente",
               JOptionPane.WARNING_MESSAGE
       );
@@ -238,6 +257,7 @@ public class Janela extends JFrame
     btnQuadrado.addActionListener(new DesenhoDeQuadrado());
     btnRetangulo.addActionListener(new DesenhoDeRetangulo());
     btnPoligono.addActionListener(new DesenhoDePoligono());
+    btnTexto.addActionListener(new EscolheFonte());
 
     JPanel pnlBotoes = new JPanel();
     FlowLayout flwBotoes = new FlowLayout();
@@ -252,6 +272,7 @@ public class Janela extends JFrame
     pnlBotoes.add(btnQuadrado);
     pnlBotoes.add(btnRetangulo);
     pnlBotoes.add(btnPoligono);
+    pnlBotoes.add(btnTexto);
     pnlBotoes.add(btnCorContorno);
     pnlBotoes.add(btnCorPreenchimento);
     pnlBotoes.add(btnApagar);
@@ -602,6 +623,18 @@ public class Janela extends JFrame
     }
   }
 
+  protected class EscolheFonte implements ActionListener
+  {
+    public void actionPerformed(ActionEvent e) {
+      JFontChooser fontChooser = new JFontChooser();
+      int result;
+      result = fontChooser.showDialog(null);
+      if (result == JFontChooser.OK_OPTION) {
+        Font font = fontChooser.getSelectedFont();
+        System.out.println("Selecione Fonte : " + font);
+      }
+    }
+  }
   protected class EscolheCorPreenchimento implements  ActionListener
   {
     public void actionPerformed(ActionEvent e)

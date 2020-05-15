@@ -2,7 +2,7 @@ import java.awt.*;
 import java.util.StringTokenizer;
 
 
-public abstract class Poligono
+/*public abstract class Poligono
 {
     protected Ponto[] inicio;
     protected Ponto[] fim;
@@ -31,3 +31,5 @@ public abstract class Poligono
         this.corPreenchimento = corPreenchimento;
     }
 }
+
+*/
