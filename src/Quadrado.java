@@ -28,9 +28,16 @@ public class Quadrado extends Figura
         this.corPreenchimento = corPreenchimento;
     }
 
-    public Quadrado(String s) //"Q:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"
+    public Quadrado(String s) throws Exception //"Q:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"
     {
         StringTokenizer quebrador = new StringTokenizer(s, ":");
+
+        String tipo = quebrador.nextToken();
+
+        if (tipo != "Q" || tipo != "q")
+        {
+            throw new Exception("String de construção de figura inválida");
+        }
 
         quebrador.nextToken();
 

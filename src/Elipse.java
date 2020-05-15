@@ -30,9 +30,16 @@ public class Elipse extends Figura
     this.corPreenchimento = corPreenchimento;
   }
 
-  public Elipse (String s)  // "E:Inicio.x:Inicio.y:Fim.x:Fim.Y::R:G:B"
+  public Elipse (String s) throws Exception // "E:Inicio.x:Inicio.y:Fim.x:Fim.Y::R:G:B"
   {
     StringTokenizer quebrador = new StringTokenizer(s,":");
+
+    String tipo = quebrador.nextToken();
+
+    if (tipo != "E" || tipo != "e")
+    {
+      throw new Exception("String de construção de figura inválida");
+    }
 
     quebrador.nextToken();
 

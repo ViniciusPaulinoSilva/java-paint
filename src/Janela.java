@@ -13,6 +13,7 @@ public class Janela extends JFrame
           btnElipse = new JButton ("Elipse"),
           btnQuadrado = new JButton("Quadrado"),
           btnRetangulo = new JButton("Retangulo"),
+          btnPoligono = new JButton("Polígono"),
           btnCorContorno = new JButton ("Contorno"),
           btnCorPreenchimento = new JButton ("Preenchimento"),
           btnAbrir = new JButton ("Abrir"),
@@ -27,7 +28,7 @@ public class Janela extends JFrame
 
   protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio,
           esperaInicioElipse, esperaFimElipse, esperaInicioQuadrado, esperaFimQuadrado, esperaInicioRetangulo,
-          esperaFimRetangulo;
+          esperaFimRetangulo, esperaInicioPoligono, esperaFimPoligono;
 
   protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);
 
@@ -38,6 +39,9 @@ public class Janela extends JFrame
   protected Ponto fimQuadrado;
   protected Ponto inicioRetangulo;
   protected Ponto fimRetangulo;
+  protected Ponto inicioPoligono;
+  protected Ponto fimPoligono;
+
 
   protected Vector<Figura> figuras = new Vector<>();
 
@@ -136,6 +140,21 @@ public class Janela extends JFrame
 
     try
     {
+      Image btnPoligonoImg = ImageIO.read(getClass().getResource("resources/poligno.jpg"));
+      btnPoligono.setIcon(new ImageIcon(btnPoligonoImg));
+    }
+    catch (IOException e)
+    {
+      JOptionPane.showMessageDialog (
+              null,
+              "Arquivo poligono.jpg n�o foi encontrado",
+              "Arquivo de imagem ausente",
+              JOptionPane.WARNING_MESSAGE
+      );
+    }
+
+    try
+    {
       Image btnCorImg = ImageIO.read(getClass().getResource("resources/cores.jpg"));
       btnCorContorno.setIcon(new ImageIcon(btnCorImg));
       btnCorPreenchimento.setIcon(new ImageIcon(btnCorImg));
@@ -218,6 +237,7 @@ public class Janela extends JFrame
     btnElipse.addActionListener(new DesenhoDeElipse());
     btnQuadrado.addActionListener(new DesenhoDeQuadrado());
     btnRetangulo.addActionListener(new DesenhoDeRetangulo());
+    btnPoligono.addActionListener(new DesenhoDePoligono());
 
     JPanel pnlBotoes = new JPanel();
     FlowLayout flwBotoes = new FlowLayout();
@@ -231,6 +251,7 @@ public class Janela extends JFrame
     pnlBotoes.add(btnElipse);
     pnlBotoes.add(btnQuadrado);
     pnlBotoes.add(btnRetangulo);
+    pnlBotoes.add(btnPoligono);
     pnlBotoes.add(btnCorContorno);
     pnlBotoes.add(btnCorPreenchimento);
     pnlBotoes.add(btnApagar);
@@ -251,7 +272,7 @@ public class Janela extends JFrame
 
     this.addWindowListener(new FechamentoDeJanela());
 
-    this.setSize(1300,600);
+    this.setSize(1500,600);
     this.setVisible(true);
   }
 
@@ -537,6 +558,28 @@ public class Janela extends JFrame
       esperaFimQuadrado = false;
       esperaInicioRetangulo = true;
       esperaFimRetangulo = false;
+
+      statusBar1.setText("Mensagem: clique no canto superior esquerdo do retangulo");
+    }
+  }
+
+  protected class DesenhoDePoligono implements ActionListener
+  {
+    public void actionPerformed (ActionEvent e)
+    {
+      esperaPonto = false;
+      esperaInicioReta = false;
+      esperaFimReta = false;
+      esperaCentro = false;
+      esperaRaio = false;
+      esperaInicioElipse = false;
+      esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = true;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique no canto superior esquerdo do retangulo");
     }

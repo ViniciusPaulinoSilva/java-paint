@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.rmi.server.ExportException;
 import java.util.StringTokenizer;
 
 public class Retangulo extends Figura {
@@ -26,9 +27,16 @@ public class Retangulo extends Figura {
         this.corPreenchimento = corPreenchimento;
     }
 
-    public Retangulo(String s) //"R:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"
+    public Retangulo(String s) throws Exception //"R:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"
     {
         StringTokenizer quebrador = new StringTokenizer(s, ":");
+
+        String tipo = quebrador.nextToken();
+
+        if (tipo != "R" || tipo != "r")
+        {
+            throw new Exception("String de construção de figura inválida");
+        }
 
         quebrador.nextToken();
 
