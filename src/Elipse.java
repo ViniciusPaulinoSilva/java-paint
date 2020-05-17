@@ -8,24 +8,24 @@ public class Elipse extends Figura
   protected int largura;
   protected int altura;
 
-  public Elipse(Ponto inicio, Ponto fim, int altura, int largura) throws Exception
+  public Elipse(Ponto inicio, Ponto fim) throws Exception
   {
-    this (inicio, fim, altura, largura, Color.BLACK,  new Color(0, 0, 0, 0));
+    this (inicio, fim, Color.BLACK,  new Color(0, 0, 0, 0));
   }
 
-  public Elipse(Ponto inicio, Ponto fim, int altura, int largura, Color corContorno) throws Exception
+  public Elipse(Ponto inicio, Ponto fim, Color corContorno) throws Exception
   {
-    this (inicio, fim, altura, largura, Color.BLACK, new Color( 0,0,0,0));
+    this (inicio, fim, corContorno, new Color( 0,0,0,0));
   }
 
-  public Elipse (Ponto inicio , Ponto fim, int altura, int largura, Color corContorno, Color corPreenchimento) throws Exception
+  public Elipse (Ponto inicio , Ponto fim, Color corContorno, Color corPreenchimento) throws Exception
   {
     super(corContorno, corPreenchimento);
 
     this.fim = fim;
     this.inicio = inicio;
-    this.altura = altura;
-    this.largura = largura;
+    this.altura = inicio.getDiff(fim)[1];
+    this.largura = inicio.getDiff(fim)[0];
     this.corContorno = corContorno;
     this.corPreenchimento = corPreenchimento;
   }
@@ -54,9 +54,9 @@ public class Elipse extends Figura
       Integer.parseInt(quebrador.nextToken())   // B
     );
     Color corPreenchimento = new Color (
-            Integer.parseInt(quebrador.nextToken()),  // R
-            Integer.parseInt(quebrador.nextToken()),  // G
-            Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()),  // R
+      Integer.parseInt(quebrador.nextToken()),  // G
+      Integer.parseInt(quebrador.nextToken())   // B
     );
 
     try
@@ -107,17 +107,12 @@ public class Elipse extends Figura
 
   public void torneSeVisivel(Graphics g)
   {
-    Ponto inicio = this.inicio;
-    Ponto fim = this.fim;
-    g.setColor(this.corPreenchimento);
-    this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
-    this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
-    g.fillOval(inicio.getX(), largura, inicio.getY() , altura);
-    g.setColor(this.corContorno);
-    this.largura = Math.abs(this.inicio.getX() - this.fim.getX());
-    this.altura = Math.abs(this.inicio.getY() - this.fim.getY());
-    g.drawOval(inicio.getX(), largura, inicio.getY() , altura);
-
+    int inicioX = inicio.getMenorX(fim);
+    int inicioY = inicio.getMenorY(fim);
+    g.setColor(corPreenchimento);
+    g.fillOval(inicioX, inicioY, largura, altura);
+    g.setColor(corContorno);
+    g.drawOval(inicioX, inicioY, largura, altura);
   }
 
   public String toString()
