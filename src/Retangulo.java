@@ -8,21 +8,21 @@ public class Retangulo extends Figura {
     protected int largura;
     protected int altura;
 
-    public Retangulo(Ponto inicio, Ponto fim, int largura, int altura) throws Exception {
-        this(inicio, fim, largura, altura, Color.BLACK, new Color(0, 0, 0, 0));
+    public Retangulo(Ponto inicio, Ponto fim) throws Exception {
+        this(inicio, fim, Color.BLACK, new Color(0, 0, 0, 0));
     }
 
-    public Retangulo(Ponto inicio, Ponto fim, int largura, int altura, Color corContorno) throws Exception {
-        this(inicio, fim, largura, altura, Color.BLACK, new Color(0, 0, 0, 0));
+    public Retangulo(Ponto inicio, Ponto fim, Color corContorno) throws Exception {
+        this(inicio, fim, Color.BLACK, new Color(0, 0, 0, 0));
     }
 
-    public Retangulo(Ponto inicio, Ponto fim, int largura, int altura, Color corContorno, Color corPreenchimento) throws Exception {
+    public Retangulo(Ponto inicio, Ponto fim, Color corContorno, Color corPreenchimento) throws Exception {
         super(corContorno, corPreenchimento);
 
         this.fim = fim;
         this.inicio = inicio;
-        this.largura = largura;
-        this.altura = altura;
+        this.largura = inicio.getDiff(fim)[0];
+        this.altura = inicio.getDiff(fim)[1];
         this.corContorno = corContorno;
         this.corPreenchimento = corPreenchimento;
     }
@@ -91,15 +91,12 @@ public class Retangulo extends Figura {
     }
 
     public void torneSeVisivel(Graphics g) {
-        Ponto inicio = this.inicio;
-        Ponto fim = this.fim;
-        g.setColor(this.corPreenchimento);
-        this.largura = Math.abs(inicio.getX() - fim.getX());
-        this.altura = Math.abs(inicio.getY() - fim.getY());
-        g.fillRect(inicio.getX(), inicio.getY(), largura, altura);
-        g.setColor(this.corContorno);
-        g.drawRect(inicio.getX(), inicio.getY(), largura, altura);
-
+        int inicioX = inicio.getMenorX(fim);
+        int inicioY = inicio.getMenorY(fim);
+        g.setColor(corPreenchimento);
+        g.fillRect(inicioX, inicioY, largura, altura);
+        g.setColor(corContorno);
+        g.drawRect(inicioX, inicioY, largura, altura);
     }
 
     public String toString() {

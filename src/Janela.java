@@ -458,9 +458,7 @@ public class Janela extends JFrame
         try {
           fimRetangulo = new Ponto (e.getX(), e.getY(), corContorno);
           esperaFimRetangulo = false;
-          int largura = Math.abs(inicioRetangulo.getX() - fimRetangulo.getX());
-          int altura = Math.abs(inicioRetangulo.getY() - fimRetangulo.getY());
-          figuras.add(new Retangulo(inicioRetangulo, fimRetangulo, largura, altura, corContorno, corPreenchimento));
+          figuras.add(new Retangulo(inicioRetangulo, fimRetangulo, corContorno, corPreenchimento));
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
