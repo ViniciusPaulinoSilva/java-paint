@@ -43,10 +43,10 @@ public class Elipse extends Figura
 
     quebrador.nextToken();
 
-    int	iniciox = Integer.parseInt(quebrador.nextToken());
-    int inicioy = Integer.parseInt(quebrador.nextToken());
-    int fimx = Integer.parseInt(quebrador.nextToken());
-    int fimy = Integer.parseInt(quebrador.nextToken());
+    int	inicioX = Integer.parseInt(quebrador.nextToken());
+    int inicioY = Integer.parseInt(quebrador.nextToken());
+    int fimX = Integer.parseInt(quebrador.nextToken());
+    int fimY = Integer.parseInt(quebrador.nextToken());
 
     Color corContorno = new Color (
       Integer.parseInt(quebrador.nextToken()),  // R
@@ -61,8 +61,8 @@ public class Elipse extends Figura
 
     try
     {
-      this.inicio = new Ponto (iniciox, inicioy);
-      this.fim = new Ponto (fimx, fimy);
+      this.inicio = new Ponto (inicioX, inicioY);
+      this.fim = new Ponto (fimX, fimY);
       this.corContorno = corContorno;
       this.corPreenchimento = corPreenchimento;
     }
