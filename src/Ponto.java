@@ -91,4 +91,21 @@ public class Ponto extends Figura
             ":" +
             this.getCorContorno().getBlue();
   }
+
+  public int[] getDiff(Ponto p2)
+  {
+    int xDiff = Math.abs(this.getX() - p2.getX());
+    int yDiff = Math.abs(this.getY() - p2.getY());
+    return new int[]{xDiff, yDiff};
+  }
+
+  public int getMenorX(Ponto p2)
+  {
+    return Math.min(this.getX(), p2.getX());
+  }
+
+  public  int getMenorY(Ponto p2)
+  {
+    return Math.min(this.getY(), p2.getY());
+  }
 }
