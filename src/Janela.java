@@ -1,5 +1,4 @@
 import say.swing.JFontChooser;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -182,7 +181,7 @@ public class Janela extends JFrame
     {
       JOptionPane.showMessageDialog (
         null,
-        "Arquivo cores.jpg n�o foi encontrado",
+        "Arquivo cores.jpg não foi encontrado",
         "Arquivo de imagem ausente",
         JOptionPane.WARNING_MESSAGE
       );
@@ -260,8 +259,13 @@ public class Janela extends JFrame
     btnTexto.addActionListener(new EscolheFonte());
 
     JPanel pnlBotoes = new JPanel();
-    FlowLayout flwBotoes = new FlowLayout();
-    pnlBotoes.setLayout(flwBotoes);
+    JPanel pnlBotoes2 = new JPanel();
+    JPanel botoes = new JPanel();
+    FlowLayout flwBotoes1 = new FlowLayout();
+    FlowLayout flwBotoes2 = new FlowLayout();
+    GridLayout grdBotoes = new GridLayout(2,1);
+    pnlBotoes.setLayout(flwBotoes1);
+    pnlBotoes2.setLayout(flwBotoes2);
 
     pnlBotoes.add(btnAbrir);
     pnlBotoes.add(btnSalvar);
@@ -271,12 +275,15 @@ public class Janela extends JFrame
     pnlBotoes.add(btnElipse);
     pnlBotoes.add(btnQuadrado);
     pnlBotoes.add(btnRetangulo);
-    pnlBotoes.add(btnPoligono);
-    pnlBotoes.add(btnTexto);
-    pnlBotoes.add(btnCorContorno);
-    pnlBotoes.add(btnCorPreenchimento);
-    pnlBotoes.add(btnApagar);
-    pnlBotoes.add(btnSair);
+    pnlBotoes2.add(btnPoligono);
+    pnlBotoes2.add(btnTexto);
+    pnlBotoes2.add(btnCorContorno);
+    pnlBotoes2.add(btnCorPreenchimento);
+    pnlBotoes2.add(btnApagar);
+    pnlBotoes2.add(btnSair);
+    botoes.setLayout(grdBotoes);
+    botoes.add(pnlBotoes);
+    botoes.add(pnlBotoes2);
 
     JPanel pnlStatus = new JPanel();
     GridLayout grdStatus = new GridLayout(1,2);
@@ -287,13 +294,13 @@ public class Janela extends JFrame
 
     Container cntForm = this.getContentPane();
     cntForm.setLayout(new BorderLayout());
-    cntForm.add(pnlBotoes, BorderLayout.NORTH);
+    cntForm.add(botoes, BorderLayout.NORTH);
     cntForm.add(pnlDesenho, BorderLayout.CENTER);
     cntForm.add(pnlStatus, BorderLayout.SOUTH);
 
     this.addWindowListener(new FechamentoDeJanela());
 
-    this.setSize(1500,600);
+    this.setSize(900,600);
     this.setVisible(true);
   }
 
@@ -379,7 +386,7 @@ public class Janela extends JFrame
       else if(esperaInicioElipse)
       {
         try {
-          inicioElipse = new Ponto (e.getX(), e.getY(), corContorno);
+          inicioElipse = new Ponto(e.getX(), e.getY(), corContorno);
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
@@ -393,9 +400,7 @@ public class Janela extends JFrame
         try {
           fimElipse = new Ponto (e.getX(), e.getY(), corContorno);
           esperaFimElipse = false;
-          int largura = Math.abs(inicioElipse.getX() - fimElipse.getX());
-          int altura = Math.abs(inicioElipse.getY() - fimElipse.getY());
-          figuras.add(new Elipse(inicioElipse, fimElipse, largura, altura, corContorno, corPreenchimento));
+          figuras.add(new Elipse(inicioElipse, fimElipse, corContorno, corPreenchimento));
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
