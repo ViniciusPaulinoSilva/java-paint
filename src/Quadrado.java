@@ -7,25 +7,25 @@ public class Quadrado extends Figura
     protected Ponto fim; //ponto base do quadrado, extremidade inferior
     protected int lado;
 
-    public Quadrado(Ponto inicio, Ponto fim, int lado) throws Exception
+    public Quadrado(Ponto inicio, Ponto fim) throws Exception
     {
-        this(inicio, fim, lado, Color.BLACK, new Color(0, 0, 0, 0));
+        this(inicio, fim, Color.BLACK, new Color(0, 0, 0, 0));
     }
 
-    public Quadrado(Ponto inicio, Ponto fim, int lado, Color corContorno) throws Exception
+    public Quadrado(Ponto inicio, Ponto fim, Color corContorno) throws Exception
     {
-        this(inicio, fim, lado, Color.BLACK, new Color(0, 0, 0, 0));
+        this(inicio, fim, Color.BLACK, new Color(0, 0, 0, 0));
     }
 
-    public Quadrado(Ponto inicio, Ponto fim, int lado, Color corContorno, Color corPreenchimento) throws Exception
+    public Quadrado(Ponto inicio, Ponto fim, Color corContorno, Color corPreenchimento) throws Exception
     {
         super(corContorno, corPreenchimento);
 
         this.fim = fim;
         this.inicio = inicio;
-        this.lado = lado;
         this.corContorno = corContorno;
         this.corPreenchimento = corPreenchimento;
+        this.lado = inicio.getDiff(fim)[0];
     }
 
     public Quadrado(String s) throws Exception //"Q:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"
@@ -106,15 +106,15 @@ public class Quadrado extends Figura
     {
         return this.fim;
     }
+    
     public void torneSeVisivel(Graphics g)
     {
-        Ponto inicio = this.inicio;
-        Ponto fim = this.fim;
-        g.setColor(this.corPreenchimento);
-        this.lado = Math.abs(this.inicio.getX() - this.fim.getX());
-        g.fillRect(inicio.getX(), inicio.getY(),lado, lado);
-        g.setColor(this.corContorno);
-        g.drawRect(inicio.getX(), inicio.getY(), lado, lado);
+        int inicioX = this.inicio.getMenorX(this.fim);
+        int inicioY = this.inicio.getMenorY(this.fim);
+        g.setColor(corPreenchimento);
+        g.fillRect(inicioX, inicioY, lado, lado);
+        g.setColor(corContorno);
+        g.drawRect(inicioX, inicioY, lado, lado);
 
     }
 

@@ -429,8 +429,7 @@ public class Janela extends JFrame
         try {
           fimQuadrado = new Ponto (e.getX(), e.getY(), corContorno);
           esperaFimQuadrado = false;
-          int lado = Math.abs(inicioQuadrado.getX() - fimQuadrado.getX());
-          figuras.add(new Quadrado(inicioQuadrado, fimQuadrado, lado, corContorno, corPreenchimento));
+          figuras.add(new Quadrado(inicioQuadrado, fimQuadrado, corContorno, corPreenchimento));
         }
         catch (Exception ex) {
           System.out.println(ex.getMessage());
