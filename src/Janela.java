@@ -555,7 +555,8 @@ public class Janela extends JFrame {
   }
 
   protected class EscolheCorPreenchimento implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e)
+    {
       Color novaCorPreenchimento = JColorChooser.showDialog(
               null,
               "Selecione a cor para o contorno",
@@ -568,14 +569,17 @@ public class Janela extends JFrame {
     }
   }
 
-  protected class SalvarArquivo implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
+  protected class SalvarArquivo implements ActionListener
+  {
+    public void actionPerformed(ActionEvent e)
+    {
 
       JFileChooser fileChooser = new JFileChooser();
       fileChooser.setDialogTitle("Nomeie o arquivo para salvar");
 
       int userSelection = fileChooser.showSaveDialog(null);
-      if (userSelection == JFileChooser.APPROVE_OPTION) {
+      if (userSelection == JFileChooser.APPROVE_OPTION)
+      {
         File fileToSave = fileChooser.getSelectedFile();
         System.out.println("Salvar Arquivo: " + fileToSave.getAbsolutePath());
       }
@@ -583,7 +587,8 @@ public class Janela extends JFrame {
   }
 
     protected class EncerrarPrograma implements ActionListener {
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent e)
+      {
         if (JOptionPane.showConfirmDialog(btnSair, "Você realmente deseja fechar o programa", "Paint",
                 JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
           System.exit(0);
@@ -591,7 +596,8 @@ public class Janela extends JFrame {
     }
 
     protected static class FechamentoDeJanela extends WindowAdapter {
-      public void windowClosing(WindowEvent e) {
+      public void windowClosing(WindowEvent e)
+      {
         System.exit(0);
       }
     }
