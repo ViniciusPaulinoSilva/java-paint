@@ -1,4 +1,6 @@
 import say.swing.JFontChooser;
+import javax.swing.JFileChooser;
+import java.io.File;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -6,6 +8,7 @@ import javax.imageio.*;
 import java.io.*;
 import java.util.*;
 import java.awt.Font;
+
 
 public class Janela extends JFrame
 {
@@ -48,7 +51,8 @@ public class Janela extends JFrame
 
   protected Vector<Figura> figuras = new Vector<>();
 
-  public Janela()
+
+    public Janela()
   {
     super("Editor Gráfico");
     try
@@ -257,6 +261,8 @@ public class Janela extends JFrame
     btnRetangulo.addActionListener(new DesenhoDeRetangulo());
     btnPoligono.addActionListener(new DesenhoDePoligono());
     btnTexto.addActionListener(new EscolheFonte());
+    btnAbrir.addActionListener(new AbrirArquivo());
+    btnSair.addActionListener(new FecharPrograma());
 
     JPanel pnlBotoes = new JPanel();
     JPanel pnlBotoes2 = new JPanel();
@@ -624,7 +630,18 @@ public class Janela extends JFrame
       }
     }
   }
-
+  protected class AbrirArquivo  implements ActionListener
+  {
+      public void actionPerformed(ActionEvent e) {
+          JFileChooser fileChooser = new JFileChooser();
+          fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+          int result = fileChooser.showOpenDialog(null);
+          if (result == JFileChooser.APPROVE_OPTION) {
+              File selectedFile = fileChooser.getSelectedFile();
+              System.out.println("Arquivo Selecionado: " + selectedFile.getAbsolutePath());
+          }
+      }
+  }
   protected class EscolheFonte implements ActionListener
   {
     public void actionPerformed(ActionEvent e) {
@@ -652,6 +669,16 @@ public class Janela extends JFrame
         corPreenchimento = novaCorPreenchimento;
       }
     }
+  }
+
+  protected class FecharPrograma implements ActionListener
+  {
+      public void actionPerformed(ActionEvent e)
+      {
+          if (JOptionPane.showConfirmDialog( btnSair,"Você realmente deseja fechar o programa","Paint",
+                  JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION)
+              System.exit(0);
+      }
   }
 
   protected class FechamentoDeJanela extends WindowAdapter
