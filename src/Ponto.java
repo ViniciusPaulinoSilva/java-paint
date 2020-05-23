@@ -27,7 +27,7 @@ public class Ponto extends Figura
   {
     StringTokenizer quebrador = new StringTokenizer(s,":");
 
-    if (quebrador.nextToken() != "p")
+    if (!quebrador.nextToken().equals("p"))
     {
       throw new Exception("String de construção de figura inválida");
     }
@@ -38,7 +38,8 @@ public class Ponto extends Figura
     this.corContorno = new Color (
       Integer.parseInt(quebrador.nextToken()),  // R
       Integer.parseInt(quebrador.nextToken()),  // G
-      Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()), // B
+      Integer.parseInt(quebrador.nextToken()) //A
     );
   }
 
@@ -89,7 +90,9 @@ public class Ponto extends Figura
             ":" +
             this.getCorContorno().getGreen() +
             ":" +
-            this.getCorContorno().getBlue();
+            this.getCorContorno().getBlue() +
+            ":" +
+            this.getCorContorno().getAlpha();
   }
 
   public int[] getDiff(Ponto p2)

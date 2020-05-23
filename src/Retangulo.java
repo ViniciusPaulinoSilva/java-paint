@@ -33,12 +33,10 @@ public class Retangulo extends Figura {
 
         String tipo = quebrador.nextToken();
 
-        if (tipo != "R" || tipo != "r")
+        if (!tipo.equals("R") && !tipo.equals("r"))
         {
             throw new Exception("String de construção de figura inválida");
         }
-
-        quebrador.nextToken();
 
         int iniciox = Integer.parseInt(quebrador.nextToken());
         int inicioy = Integer.parseInt(quebrador.nextToken());
@@ -48,17 +46,21 @@ public class Retangulo extends Figura {
         Color corContorno = new Color(
                 Integer.parseInt(quebrador.nextToken()),  // R
                 Integer.parseInt(quebrador.nextToken()),  // G
-                Integer.parseInt(quebrador.nextToken())   // B
+                Integer.parseInt(quebrador.nextToken()), // B
+              Integer.parseInt(quebrador.nextToken()) //A
         );
         Color corPreenchimento = new Color(
                 Integer.parseInt(quebrador.nextToken()),  // R
                 Integer.parseInt(quebrador.nextToken()),  // G
-                Integer.parseInt(quebrador.nextToken())   // B
+                Integer.parseInt(quebrador.nextToken()), // B
+              Integer.parseInt(quebrador.nextToken()) //A
         );
 
         try {
             this.inicio = new Ponto(iniciox, inicioy);
             this.fim = new Ponto(fimx, fimy);
+            this.largura = inicio.getDiff(fim)[0];
+            this.altura = inicio.getDiff(fim)[1];
             this.corContorno = corContorno;
             this.corPreenchimento = corPreenchimento;
         } catch (Exception e) {
@@ -115,11 +117,15 @@ public class Retangulo extends Figura {
                 ":" +
                 this.getCorContorno().getBlue() +
                 ":" +
+                this.getCorContorno().getAlpha() +
+                ":" +
                 this.getCorPreenchimento().getRed() +
                 ":" +
                 this.getCorPreenchimento().getGreen() +
                 ":" +
-                this.getCorPreenchimento().getBlue();
+                this.getCorPreenchimento().getBlue() +
+                ":" +
+                this.getCorPreenchimento().getAlpha();
     }
 }
 

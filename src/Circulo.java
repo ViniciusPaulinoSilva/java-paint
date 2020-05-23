@@ -29,13 +29,13 @@ public class Circulo extends Figura
     this.raio = raio;
   }
 
-  public Circulo (String s) throws Exception  // "C:x:y:raio:R:G:B:R:G:B"
+  public Circulo (String s) throws Exception  // "C:x:y:raio:R:G:B:A:R:G:B:a"
   {
     StringTokenizer quebrador = new StringTokenizer(s, ":");
 
     String tipo = quebrador.nextToken();
 
-    if (tipo != "C" || tipo != "c")
+    if (!tipo.equals("C") && !tipo.equals("c"))
     {
       throw new Exception("String de construção de figura inválida");
     }
@@ -51,18 +51,20 @@ public class Circulo extends Figura
     }
 
     Color corContorno = new Color (
-      Integer.parseInt(quebrador.nextToken()),  // R
-      Integer.parseInt(quebrador.nextToken()),  // G
-      Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()), // R
+      Integer.parseInt(quebrador.nextToken()), // G
+      Integer.parseInt(quebrador.nextToken()), // B
+      Integer.parseInt(quebrador.nextToken()) //A
     );
 
     Color corPreenchimento = new Color (
-      Integer.parseInt(quebrador.nextToken()),  // R
-      Integer.parseInt(quebrador.nextToken()),  // G
-      Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()), // R
+      Integer.parseInt(quebrador.nextToken()), // G
+      Integer.parseInt(quebrador.nextToken()), // B
+      Integer.parseInt(quebrador.nextToken()) //A
     );
 
-    this.centro  = new Ponto (x,y,corContorno);
+    this.centro  = new Ponto (x,y);
     this.raio = raio;
     this.corContorno = corContorno;
     this.corPreenchimento = corPreenchimento;
@@ -126,10 +128,14 @@ public class Circulo extends Figura
             ":" +
             this.getCorContorno().getBlue() +
             ":" +
+            this.getCorContorno().getAlpha() +
+            ":" +
             this.getCorPreenchimento().getRed() +
             ":" +
             this.getCorPreenchimento().getGreen() +
             ":" +
-            this.getCorPreenchimento().getBlue();
+            this.getCorPreenchimento().getBlue() +
+            ":" +
+            this.getCorPreenchimento().getAlpha();
   }
 }

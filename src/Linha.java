@@ -25,11 +25,13 @@ public class Linha extends Figura
 		}
     }
 
-    public Linha (String s)
-    {
+    public Linha (String s) throws Exception {
         StringTokenizer quebrador = new StringTokenizer(s,":");
 
-        quebrador.nextToken();
+        String tipo = quebrador.nextToken();
+        if (!tipo.equals("l") && !tipo.equals("L")) {
+            throw new Exception("String inválida!");
+        }
 
         int   x1  = Integer.parseInt(quebrador.nextToken());
         int   y1  = Integer.parseInt(quebrador.nextToken());
@@ -40,7 +42,8 @@ public class Linha extends Figura
         Color cor = new Color (
             Integer.parseInt(quebrador.nextToken()), // R
            Integer.parseInt(quebrador.nextToken()), // G
-           Integer.parseInt(quebrador.nextToken()) // B
+           Integer.parseInt(quebrador.nextToken()), // B
+            Integer.parseInt(quebrador.nextToken()) //A
         );
 		
 		try
@@ -102,18 +105,20 @@ public class Linha extends Figura
     public String toString()
     {
         return "l:" +
-               this.p1.getX() +
-               ":" +
-               this.p1.getY() +
-               ":" +
-               this.p2.getX() +
-               ":" +
-               this.p2.getY() +
-               ":" +
-               this.getCorContorno().getRed() +
-               ":" +
-               this.getCorContorno().getGreen() +
-               ":" +
-               this.getCorContorno().getBlue();
+        this.p1.getX() +
+        ":" +
+        this.p1.getY() +
+        ":" +
+        this.p2.getX() +
+        ":" +
+        this.p2.getY() +
+        ":" +
+        this.getCorContorno().getRed() +
+        ":" +
+        this.getCorContorno().getGreen() +
+        ":" +
+        this.getCorContorno().getBlue() +
+        ":" +
+        this.getCorContorno().getAlpha();
     }
 }

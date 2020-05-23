@@ -34,12 +34,10 @@ public class Quadrado extends Figura
 
         String tipo = quebrador.nextToken();
 
-        if (tipo != "Q" || tipo != "q")
+        if (!tipo.equals("Q") && !tipo.equals("q"))
         {
             throw new Exception("String de construção de figura inválida");
         }
-
-        quebrador.nextToken();
 
         int iniciox = Integer.parseInt(quebrador.nextToken());
         int inicioy = Integer.parseInt(quebrador.nextToken());
@@ -49,12 +47,14 @@ public class Quadrado extends Figura
         Color corContorno = new Color(
                 Integer.parseInt(quebrador.nextToken()),  // R
                 Integer.parseInt(quebrador.nextToken()),  // G
-                Integer.parseInt(quebrador.nextToken())   // B
+                Integer.parseInt(quebrador.nextToken()), // B
+                Integer.parseInt(quebrador.nextToken()) //A
         );
         Color corPreenchimento = new Color(
                 Integer.parseInt(quebrador.nextToken()),  // R
                 Integer.parseInt(quebrador.nextToken()),  // G
-                Integer.parseInt(quebrador.nextToken())   // B
+                Integer.parseInt(quebrador.nextToken()), // B
+                Integer.parseInt(quebrador.nextToken()) //A
         );
 
         try
@@ -63,6 +63,7 @@ public class Quadrado extends Figura
             this.fim = new Ponto(fimx, fimy);
             this.corContorno = corContorno;
             this.corPreenchimento = corPreenchimento;
+            this.lado = inicio.getDiff(fim)[1];
         }
 
         catch (Exception e)
@@ -135,10 +136,14 @@ public class Quadrado extends Figura
                 ":" +
                 this.getCorContorno().getBlue() +
                 ":" +
+                this.getCorContorno().getAlpha() +
+                ":" +
                 this.getCorPreenchimento().getRed() +
                 ":" +
                 this.getCorPreenchimento().getGreen() +
                 ":" +
-                this.getCorPreenchimento().getBlue();
+                this.getCorPreenchimento().getBlue() +
+                ":" +
+                this.getCorPreenchimento().getAlpha();
     }
 }

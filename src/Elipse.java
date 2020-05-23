@@ -36,12 +36,10 @@ public class Elipse extends Figura
 
     String tipo = quebrador.nextToken();
 
-    if (tipo != "E" || tipo != "e")
+    if (!tipo.equals("E") && !tipo.equals("e"))
     {
       throw new Exception("String de construção de figura inválida");
     }
-
-    quebrador.nextToken();
 
     int	inicioX = Integer.parseInt(quebrador.nextToken());
     int inicioY = Integer.parseInt(quebrador.nextToken());
@@ -51,18 +49,22 @@ public class Elipse extends Figura
     Color corContorno = new Color (
       Integer.parseInt(quebrador.nextToken()),  // R
       Integer.parseInt(quebrador.nextToken()),  // G
-      Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()), // B
+      Integer.parseInt(quebrador.nextToken()) //A
     );
     Color corPreenchimento = new Color (
       Integer.parseInt(quebrador.nextToken()),  // R
       Integer.parseInt(quebrador.nextToken()),  // G
-      Integer.parseInt(quebrador.nextToken())   // B
+      Integer.parseInt(quebrador.nextToken()), // B
+      Integer.parseInt(quebrador.nextToken()) //A
     );
 
     try
     {
       this.inicio = new Ponto (inicioX, inicioY);
       this.fim = new Ponto (fimX, fimY);
+      this.altura = inicio.getDiff(fim)[1];
+      this.largura = inicio.getDiff(fim)[0];
       this.corContorno = corContorno;
       this.corPreenchimento = corPreenchimento;
     }
@@ -132,11 +134,15 @@ public class Elipse extends Figura
             ":" +
             this.getCorContorno().getBlue() +
             ":" +
+            this.getCorContorno().getAlpha() +
+            ":" +
             this.getCorPreenchimento().getRed() +
             ":" +
             this.getCorPreenchimento().getGreen() +
             ":" +
-            this.getCorPreenchimento().getBlue();
+            this.getCorPreenchimento().getBlue() +
+            ":" +
+            this.getCorPreenchimento().getAlpha();
   }
 }
 

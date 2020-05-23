@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.*;
 import java.awt.Font;
@@ -578,18 +579,6 @@ public class Janela extends JFrame {
     }
   }
 
-  protected class AbrirArquivo implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
-      JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-      int result = fileChooser.showOpenDialog(null);
-      if (result == JFileChooser.APPROVE_OPTION) {
-        File selectedFile = fileChooser.getSelectedFile();
-        System.out.println("Arquivo Selecionado: " + selectedFile.getAbsolutePath());
-      }
-    }
-  }
-
   protected class EscolheFonte implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JFontChooser fontChooser = new JFontChooser();
@@ -617,19 +606,94 @@ public class Janela extends JFrame {
     }
   }
 
+  protected class AbrirArquivo implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+      JFileChooser fileChooser = new JFileChooser();
+      FileNameExtensionFilter filtro = new FileNameExtensionFilter("Arquivos Java-Paint", "javapaint");
+      fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+      fileChooser.setFileFilter(filtro);
+      int result = fileChooser.showOpenDialog(Janela.this);
+      if (result == JFileChooser.APPROVE_OPTION) {
+        File selectedFile = fileChooser.getSelectedFile();
+        try {
+          Scanner leitor = new Scanner(selectedFile);
+          figuras.clear();
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          while (leitor.hasNextLine()) {
+            String figura = leitor.nextLine();
+            StringTokenizer quebrador = new StringTokenizer(figura,":");
+            switch (quebrador.nextToken()) {
+              case "p":
+                figuras.add(new Ponto(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "c":
+                figuras.add(new Circulo(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "l":
+                figuras.add(new Linha(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "e":
+                figuras.add(new Elipse(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "q":
+                figuras.add(new Quadrado(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "r":
+                figuras.add(new Retangulo(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+            }
+          }
+          leitor.close();
+        } catch (FileNotFoundException ex) {
+          JOptionPane.showMessageDialog(Janela.this, "Arquivo não encontrado!");
+          ex.printStackTrace();
+        } catch (Exception exception) {
+          exception.printStackTrace();
+        }
+      }
+    }
+  }
+
   protected class SalvarArquivo implements ActionListener
   {
     public void actionPerformed(ActionEvent e)
     {
-
       JFileChooser fileChooser = new JFileChooser();
-      fileChooser.setDialogTitle("Nomeie o arquivo para salvar");
+      fileChooser.setDialogTitle("Salvar como...");
 
-      int userSelection = fileChooser.showSaveDialog(null);
+      int userSelection = fileChooser.showSaveDialog(Janela.this);
       if (userSelection == JFileChooser.APPROVE_OPTION)
       {
-        File fileToSave = fileChooser.getSelectedFile();
-        System.out.println("Salvar Arquivo: " + fileToSave.getAbsolutePath());
+        File arquivo = fileChooser.getSelectedFile();
+        try {
+          if (arquivo.createNewFile()) {
+            System.out.println("Arquivo criado: " + arquivo.getName());
+          } else {
+            System.out.println("Arquivo já existiu.");
+            if (JOptionPane.showConfirmDialog(Janela.this, "Arquivo já existente\n" +
+                "Deseja sobrescrever?", "Atenção", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
+              return;
+          }
+          try {
+            FileWriter escritor = new FileWriter(arquivo.getAbsoluteFile());
+            for (Figura figura : figuras) {
+              escritor.write(figura.toString() + "\n");
+            }
+            escritor.close();
+          } catch (IOException ex) {
+            JOptionPane.showMessageDialog(Janela.this, "Erro na escrita do arquivo!");
+            ex.printStackTrace();
+          }
+        } catch (IOException ex) {
+          JOptionPane.showMessageDialog(Janela.this, "Erro na criação do arquivo!");
+          ex.printStackTrace();
+        }
       }
     }
   }
@@ -637,8 +701,8 @@ public class Janela extends JFrame {
     protected class EncerrarPrograma implements ActionListener {
       public void actionPerformed(ActionEvent e)
       {
-        if (JOptionPane.showConfirmDialog(btnSair, "Você realmente deseja fechar o programa", "Paint",
-                JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+        if (JOptionPane.showConfirmDialog(Janela.this, "Você realmente deseja fechar o programa", "Paint",
+            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
           System.exit(0);
       }
     }
