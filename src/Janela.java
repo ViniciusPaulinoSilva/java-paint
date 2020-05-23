@@ -37,6 +37,7 @@ public class Janela extends JFrame {
           esperaFimRetangulo, esperaInicioPoligono, esperaFimPoligono;
 
   protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);
+  protected Font fonte;
 
   protected Ponto p1;
   protected Ponto inicioElipse;
@@ -182,10 +183,10 @@ public class Janela extends JFrame {
       btnSalvar.setIcon(new ImageIcon(btnSalvarImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo salvar.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo salvar.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -586,6 +587,7 @@ public class Janela extends JFrame {
       result = fontChooser.showDialog(null);
       if (result == JFontChooser.OK_OPTION) {
         Font font = fontChooser.getSelectedFont();
+        fonte = font;
         System.out.println("Selecione Fonte : " + font);
       }
     }
@@ -671,17 +673,25 @@ public class Janela extends JFrame {
       if (userSelection == JFileChooser.APPROVE_OPTION)
       {
         File arquivo = fileChooser.getSelectedFile();
+        File arquivoExt;
+        String nome = arquivo.getName();
+        if (nome.split("\\.").length <= 1 ||
+          (nome.split("\\.").length > 1 && !nome.split("\\.")[1].equals("javapaint"))) {
+          arquivoExt = new File(arquivo.getAbsolutePath() + ".javapaint");
+        } else {
+          arquivoExt = arquivo;
+        }
         try {
-          if (arquivo.createNewFile()) {
-            System.out.println("Arquivo criado: " + arquivo.getName());
+          if (arquivoExt.createNewFile()) {
+            System.out.println("Arquivo criado: " + arquivoExt.getName());
           } else {
-            System.out.println("Arquivo já existiu.");
+            System.out.println("Arquivo já existe.");
             if (JOptionPane.showConfirmDialog(Janela.this, "Arquivo já existente\n" +
                 "Deseja sobrescrever?", "Atenção", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION)
               return;
           }
           try {
-            FileWriter escritor = new FileWriter(arquivo.getAbsoluteFile());
+            FileWriter escritor = new FileWriter(arquivoExt.getAbsoluteFile());
             for (Figura figura : figuras) {
               escritor.write(figura.toString() + "\n");
             }
