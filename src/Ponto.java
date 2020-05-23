@@ -96,7 +96,7 @@ public class Ponto extends Figura
   {
     int xDiff = Math.abs(this.getX() - p2.getX());
     int yDiff = Math.abs(this.getY() - p2.getY());
-    return new int[]{xDiff, yDiff};
+    return new int[] {xDiff, yDiff};
   }
 
   public int getMenorX(Ponto p2)

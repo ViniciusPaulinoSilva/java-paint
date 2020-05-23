@@ -21,7 +21,7 @@ public class Linha extends Figura
 		}
 		catch (Exception ex)
 		{
-			System.out.println(ex);
+			System.out.println(ex.getMessage());
 		}
     }
 
@@ -37,9 +37,11 @@ public class Linha extends Figura
         int   x2  = Integer.parseInt(quebrador.nextToken());
         int   y2  = Integer.parseInt(quebrador.nextToken());
 
-        Color cor = new Color (Integer.parseInt(quebrador.nextToken()),  // R
-                               Integer.parseInt(quebrador.nextToken()),  // G
-                               Integer.parseInt(quebrador.nextToken())); // B
+        Color cor = new Color (
+            Integer.parseInt(quebrador.nextToken()), // R
+           Integer.parseInt(quebrador.nextToken()), // G
+           Integer.parseInt(quebrador.nextToken()) // B
+        );
 		
 		try
 		{
@@ -90,8 +92,11 @@ public class Linha extends Figura
     public void torneSeVisivel (Graphics g)
     {
         g.setColor(this.corContorno);
-        g.drawLine(this.p1.getX(), this.p1.getY(),   // ponto inicial
-                   this.p2.getX(), this.p2.getY());  // ponto final
+        g.drawLine(this.p1.getX(), this.p1.getY(), this.p2.getX(), this.p2.getY());
+    }
+
+    public void esconder (Graphics g)
+    {
     }
 
     public String toString()

@@ -25,7 +25,7 @@ public class Quadrado extends Figura
         this.inicio = inicio;
         this.corContorno = corContorno;
         this.corPreenchimento = corPreenchimento;
-        this.lado = inicio.getDiff(fim)[0];
+        this.lado = inicio.getDiff(fim)[1];
     }
 
     public Quadrado(String s) throws Exception //"Q:inicio.X:inicio.Y:fim.X:fim.Y:R:G:B"

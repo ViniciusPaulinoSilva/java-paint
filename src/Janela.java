@@ -47,6 +47,8 @@ public class Janela extends JFrame {
   protected Ponto inicioPoligono;
   protected Ponto fimPoligono;
 
+  protected int linhasTemporarias = 0;
+
 
   protected Vector<Figura> figuras = new Vector<>();
 
@@ -297,15 +299,13 @@ public class Janela extends JFrame {
         } catch (Exception ex) {
           System.out.println(ex.getMessage());
         }
-
         esperaInicioReta = false;
         esperaFimReta = true;
         statusBar1.setText("Mensagem: clique o ponto final da reta");
       } else if (esperaFimReta) {
         esperaFimReta = false;
         esperaInicioReta = true;
-        figuras.add(new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corContorno));
-        figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+        linhasTemporarias = 0;
         statusBar1.setText("Mensagem:");
       } else if (esperaCentro) {
         try {
@@ -318,15 +318,7 @@ public class Janela extends JFrame {
         statusBar1.setText("Mensagem: clique a extremidade do circulo");
       } else if (esperaRaio) {
         esperaRaio = false;
-        int altura = e.getY() - p1.getY();
-        int largura = e.getX() - p1.getX();
-        int raio = (int) Math.round(Math.sqrt((altura * altura) + (largura * largura)));
-        try {
-          figuras.add(new Circulo(p1.getX(), p1.getY(), raio, corContorno, corPreenchimento));
-        } catch (Exception ex) {
-          System.out.println(ex.getMessage());
-        }
-        figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+        linhasTemporarias = 0;
         statusBar1.setText("Mensagem: ");
         esperaCentro = true;
       } else if (esperaInicioElipse) {
@@ -339,15 +331,9 @@ public class Janela extends JFrame {
         esperaFimElipse = true;
         statusBar1.setText("Mensagem: Clique no ponto inferior direito da elipse");
       } else if (esperaFimElipse) {
-        try {
-          fimElipse = new Ponto(e.getX(), e.getY(), corContorno);
-          esperaFimElipse = false;
-          figuras.add(new Elipse(inicioElipse, fimElipse, corContorno, corPreenchimento));
-        } catch (Exception ex) {
-          System.out.println(ex.getMessage());
-        }
-        figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
         statusBar1.setText("Mensagem: ");
+        linhasTemporarias = 0;
+        esperaFimElipse = false;
         esperaInicioElipse = true;
       } else if (esperaInicioQuadrado) {
         try {
@@ -359,15 +345,9 @@ public class Janela extends JFrame {
         esperaFimQuadrado = true;
         statusBar1.setText("Mensagem: Clique no ponto inferior direito do Quadrado ");
       } else if (esperaFimQuadrado) {
-        try {
-          fimQuadrado = new Ponto(e.getX(), e.getY(), corContorno);
-          esperaFimQuadrado = false;
-          figuras.add(new Quadrado(inicioQuadrado, fimQuadrado, corContorno, corPreenchimento));
-        } catch (Exception ex) {
-          System.out.println(ex.getMessage());
-        }
-        figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+        linhasTemporarias = 0;
         statusBar1.setText("Mensagem: ");
+        esperaFimQuadrado = false;
         esperaInicioQuadrado = true;
       } else if (esperaInicioRetangulo) {
         try {
@@ -377,16 +357,10 @@ public class Janela extends JFrame {
         }
         esperaInicioRetangulo = false;
         esperaFimRetangulo = true;
-        statusBar1.setText("Mensagem: Clique no ponto inferior direito do retangulo ");
+        statusBar1.setText("Mensagem: Clique no ponto inferior direito do retângulo");
       } else if (esperaFimRetangulo) {
-        try {
-          fimRetangulo = new Ponto(e.getX(), e.getY(), corContorno);
-          esperaFimRetangulo = false;
-          figuras.add(new Retangulo(inicioRetangulo, fimRetangulo, corContorno, corPreenchimento));
-        } catch (Exception ex) {
-          System.out.println(ex.getMessage());
-        }
-        figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+        linhasTemporarias = 0;
+        esperaFimRetangulo = false;
         statusBar1.setText("Mensagem: ");
         esperaInicioRetangulo = true;
       }
@@ -409,6 +383,80 @@ public class Janela extends JFrame {
 
     public void mouseMoved(MouseEvent e) {
       statusBar2.setText("Coordenada: " + e.getX() + "," + e.getY());
+      if (esperaFimReta) {
+        linhasTemporarias++;
+        figuras.add(new Linha(p1.getX(), p1.getY(), e.getX(), e.getY(), corContorno));
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          figuras.remove(figuras.size() - 2);
+          linhasTemporarias--;
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      } else if (esperaRaio) {
+        int altura = e.getY() - p1.getY();
+        int largura = e.getX() - p1.getX();
+        int raio = (int) Math.round(Math.sqrt((altura * altura) + (largura * largura)));
+        linhasTemporarias++;
+        try {
+          figuras.add(new Circulo(p1.getX(), p1.getY(), raio, corContorno, corPreenchimento));
+        } catch (Exception ex) {
+          System.out.println(ex.getMessage());
+        }
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          figuras.remove(figuras.size() - 2);
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      } else if (esperaFimElipse) {
+        linhasTemporarias++;
+        try {
+          fimElipse = new Ponto(e.getX(), e.getY(), corContorno);
+          figuras.add(new Elipse(inicioElipse, fimElipse, corContorno, corPreenchimento));
+        } catch (Exception ex) {
+          System.out.println(ex.getMessage());
+        }
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          figuras.remove(figuras.size() - 2);
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      } else if (esperaFimQuadrado) {
+        linhasTemporarias++;
+        try {
+          fimQuadrado = new Ponto(e.getX(), e.getY(), corContorno);
+          figuras.add(new Quadrado(inicioQuadrado, fimQuadrado, corContorno, corPreenchimento));
+        } catch (Exception ex) {
+          System.out.println(ex.getMessage());
+        }
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          figuras.remove(figuras.size() - 2);
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      } else if (esperaFimRetangulo) {
+        linhasTemporarias++;
+        try {
+          fimRetangulo = new Ponto(e.getX(), e.getY(), corContorno);
+          figuras.add(new Retangulo(inicioRetangulo, fimRetangulo, corContorno, corPreenchimento));
+        } catch (Exception ex) {
+          System.out.println(ex.getMessage());
+        }
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          figuras.remove(figuras.size() - 2);
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      }
     }
   }
 
