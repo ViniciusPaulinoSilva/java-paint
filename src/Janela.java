@@ -1,4 +1,6 @@
 import say.swing.JFontChooser;
+
+import javax.activity.ActivityRequiredException;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.*;
@@ -226,6 +228,7 @@ public class Janela extends JFrame {
     btnAbrir.addActionListener(new AbrirArquivo());
     btnSair.addActionListener(new EncerrarPrograma());
     btnSalvar.addActionListener(new SalvarArquivo());
+    btnApagar.addActionListener(new Apagar());
 
     JPanel pnlBotoes = new JPanel();
     JPanel pnlBotoes2 = new JPanel();
@@ -770,19 +773,33 @@ public class Janela extends JFrame {
     }
   }
 
-    protected class EncerrarPrograma implements ActionListener {
-      public void actionPerformed(ActionEvent e)
-      {
-        if (JOptionPane.showConfirmDialog(Janela.this, "Você realmente deseja fechar o programa", "Paint",
-            JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-          System.exit(0);
+  protected  class Apagar implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+      if (figuras.size() <= 0) {
+        JOptionPane.showMessageDialog(Janela.this, "Não existem figuras para serem apagadas!");
+        return;
       }
-    }
-
-    protected static class FechamentoDeJanela extends WindowAdapter {
-      public void windowClosing(WindowEvent e)
-      {
-        System.exit(0);
+      figuras.remove(figuras.size() - 1);
+      pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+      for (Figura figura : figuras) {
+        figura.torneSeVisivel(pnlDesenho.getGraphics());
       }
     }
   }
+
+  protected class EncerrarPrograma implements ActionListener {
+    public void actionPerformed(ActionEvent e)
+    {
+      if (JOptionPane.showConfirmDialog(Janela.this, "Você realmente deseja fechar o programa", "Paint",
+          JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+        System.exit(0);
+    }
+  }
+
+  protected static class FechamentoDeJanela extends WindowAdapter {
+    public void windowClosing(WindowEvent e)
+    {
+      System.exit(0);
+    }
+  }
+}
