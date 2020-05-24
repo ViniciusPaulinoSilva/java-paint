@@ -34,10 +34,9 @@ public class Janela extends JFrame {
 
   protected boolean esperaPonto, esperaInicioReta, esperaFimReta, esperaCentro, esperaRaio,
           esperaInicioElipse, esperaFimElipse, esperaInicioQuadrado, esperaFimQuadrado, esperaInicioRetangulo,
-          esperaFimRetangulo, esperaInicioPoligono, esperaFimPoligono;
+          esperaFimRetangulo, esperaTexto, esperaInicioPoligono, esperaFimPoligono;
 
   protected Color corContorno = Color.BLACK, corPreenchimento = new Color(0, 0, 0, 0);
-  protected Font fonte;
 
   protected Ponto p1;
   protected Ponto inicioElipse;
@@ -50,7 +49,7 @@ public class Janela extends JFrame {
   protected Ponto fimPoligono;
 
   protected int linhasTemporarias = 0;
-
+  protected String texto = "";
 
   protected Vector<Figura> figuras = new Vector<>();
 
@@ -365,6 +364,13 @@ public class Janela extends JFrame {
         esperaFimRetangulo = false;
         statusBar1.setText("Mensagem: ");
         esperaInicioRetangulo = true;
+      } else if (esperaTexto) {
+        try {
+          texto = JOptionPane.showInputDialog(Janela.this, "Texto a ser digitado");
+          pnlDesenho.getGraphics().drawString(texto, e.getX(), e.getY());
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
       }
     }
 
@@ -469,6 +475,14 @@ public class Janela extends JFrame {
       esperaFimReta = false;
       esperaCentro = false;
       esperaRaio = false;
+      esperaInicioElipse = true;
+      esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique o local do ponto desejado");
     }
@@ -481,6 +495,14 @@ public class Janela extends JFrame {
       esperaFimReta = false;
       esperaCentro = false;
       esperaRaio = false;
+      esperaInicioElipse = true;
+      esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique o ponto inicial da reta");
     }
@@ -493,6 +515,14 @@ public class Janela extends JFrame {
       esperaFimReta = false;
       esperaCentro = true;
       esperaRaio = false;
+      esperaInicioElipse = true;
+      esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique o ponto central do círculo");
     }
@@ -507,6 +537,12 @@ public class Janela extends JFrame {
       esperaRaio = false;
       esperaInicioElipse = true;
       esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique no canto superior esquerdo da elipse");
     }
@@ -523,6 +559,10 @@ public class Janela extends JFrame {
       esperaFimElipse = false;
       esperaInicioQuadrado = true;
       esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique no canto superior esquerdo do quadrado");
     }
@@ -566,6 +606,27 @@ public class Janela extends JFrame {
     }
   }
 
+  protected class EscreveTexto implements ActionListener {
+    public void actionPerformed(ActionEvent e) {
+      esperaPonto = false;
+      esperaInicioReta = false;
+      esperaFimReta = false;
+      esperaCentro = false;
+      esperaRaio = false;
+      esperaInicioElipse = false;
+      esperaFimElipse = false;
+      esperaInicioQuadrado = false;
+      esperaFimQuadrado = false;
+      esperaInicioRetangulo = false;
+      esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
+      esperaTexto = true;
+
+      statusBar1.setText("Mensagem: digite o texto");
+    }
+  }
+
   protected class EscolheCorContorno implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       Color novaCorContorno = JColorChooser.showDialog(
@@ -587,7 +648,8 @@ public class Janela extends JFrame {
       result = fontChooser.showDialog(null);
       if (result == JFontChooser.OK_OPTION) {
         Font font = fontChooser.getSelectedFont();
-        fonte = font;
+        pnlDesenho.setFont(font);
+        esperaTexto = true;
         System.out.println("Selecione Fonte : " + font);
       }
     }
