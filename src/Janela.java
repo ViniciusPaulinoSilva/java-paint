@@ -50,6 +50,7 @@ public class Janela extends JFrame {
   protected int linhasTemporarias = 0, linhasTotal = 0;
   protected String texto = "";
   protected Vector<Integer> linhasX = new Vector<>(), linhasY = new Vector<>();
+  protected Font fonte;
 
   protected Vector<Figura> figuras = new Vector<>();
   protected Vector<Figura> linhasProv = new Vector<>();
@@ -369,7 +370,11 @@ public class Janela extends JFrame {
       } else if (esperaTexto) {
         try {
           texto = JOptionPane.showInputDialog(Janela.this, "Texto a ser digitado");
-          pnlDesenho.getGraphics().drawString(texto, e.getX(), e.getY());
+          Texto text = new Texto(
+            texto, e.getX(), e.getY(), fonte.getFontName(), fonte.getStyle(), fonte.getSize(), corContorno
+          );
+          text.torneSeVisivel(pnlDesenho.getGraphics());
+          figuras.add(text);
         } catch (Exception ex) {
           ex.printStackTrace();
         }
@@ -389,6 +394,7 @@ public class Janela extends JFrame {
         int[] arrayY = new int[linhasY.size()];
         for (int i = 0; i < linhasX.size(); i++) arrayX[i] = linhasX.get(i);
         for (int i = 0; i < linhasY.size(); i++) arrayY[i] = linhasY.get(i);
+        pnlDesenho.getGraphics().setColor(corContorno);
         pnlDesenho.getGraphics().drawPolyline(arrayX, arrayY, linhasTotal);
         for (int i = 0; i + 1 < linhasX.size(); i++) {
           linhasProv.add(new Linha(linhasX.get(i), linhasY.get(i), linhasX.get(i + 1), linhasY.get(i + 1), corContorno));
@@ -682,13 +688,10 @@ public class Janela extends JFrame {
   protected class EscolheFonte implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       JFontChooser fontChooser = new JFontChooser();
-      int result;
-      result = fontChooser.showDialog(null);
+      int result = fontChooser.showDialog(Janela.this);
       if (result == JFontChooser.OK_OPTION) {
-        Font font = fontChooser.getSelectedFont();
-        pnlDesenho.setFont(font);
+        fonte = fontChooser.getSelectedFont();
         esperaTexto = true;
-        System.out.println("Selecione Fonte : " + font);
       }
     }
   }
@@ -747,6 +750,14 @@ public class Janela extends JFrame {
                 break;
               case "r":
                 figuras.add(new Retangulo(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "t":
+                figuras.add(new Texto(figura));
+                figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
+                break;
+              case "po":
+                figuras.add(new Poligono(figura));
                 figuras.get(figuras.size() - 1).torneSeVisivel(pnlDesenho.getGraphics());
                 break;
             }
