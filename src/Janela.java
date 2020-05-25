@@ -1,6 +1,4 @@
 import say.swing.JFontChooser;
-
-import javax.activity.ActivityRequiredException;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.awt.*;
@@ -11,7 +9,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import java.util.*;
 import java.awt.Font;
-
 
 public class Janela extends JFrame {
   protected JButton btnPonto = new JButton("Ponto"),
@@ -50,10 +47,12 @@ public class Janela extends JFrame {
   protected Ponto inicioPoligono;
   protected Ponto fimPoligono;
 
-  protected int linhasTemporarias = 0;
+  protected int linhasTemporarias = 0, linhasTotal = 0;
   protected String texto = "";
+  protected Vector<Integer> linhasX = new Vector<>(), linhasY = new Vector<>();
 
   protected Vector<Figura> figuras = new Vector<>();
+  protected Vector<Figura> linhasProv = new Vector<>();
 
 
   public Janela() {
@@ -63,10 +62,10 @@ public class Janela extends JFrame {
       btnPonto.setIcon(new ImageIcon(btnPontoImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo ponto.jpg não foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo ponto.jpg não foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -75,10 +74,10 @@ public class Janela extends JFrame {
       btnLinha.setIcon(new ImageIcon(btnLinhaImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo linha.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo linha.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -87,10 +86,10 @@ public class Janela extends JFrame {
       btnCirculo.setIcon(new ImageIcon(btnCirculoImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo circulo.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo circulo.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -99,10 +98,10 @@ public class Janela extends JFrame {
       btnElipse.setIcon(new ImageIcon(btnElipseImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo elipse.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo elipse.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -111,10 +110,10 @@ public class Janela extends JFrame {
       btnQuadrado.setIcon(new ImageIcon(btnQuadradoImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo quadrado.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo quadrado.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -123,10 +122,10 @@ public class Janela extends JFrame {
       btnRetangulo.setIcon(new ImageIcon(btnRetanguloImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo retangulo.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo retangulo.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -135,10 +134,10 @@ public class Janela extends JFrame {
       btnPoligono.setIcon(new ImageIcon(btnPoligonoImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo poligono.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo poligono.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -147,10 +146,10 @@ public class Janela extends JFrame {
       btnTexto.setIcon(new ImageIcon(btnTextoImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo texto.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo texto.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -160,10 +159,10 @@ public class Janela extends JFrame {
       btnCorPreenchimento.setIcon(new ImageIcon(btnCorImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo cores.jpg não foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo cores.jpg não foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -172,10 +171,10 @@ public class Janela extends JFrame {
       btnAbrir.setIcon(new ImageIcon(btnAbrirImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo abrir.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo abrir.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -196,10 +195,10 @@ public class Janela extends JFrame {
       btnApagar.setIcon(new ImageIcon(btnApagarImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo apagar.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo apagar.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -208,10 +207,10 @@ public class Janela extends JFrame {
       btnSair.setIcon(new ImageIcon(btnSairImg));
     } catch (IOException e) {
       JOptionPane.showMessageDialog(
-              null,
-              "Arquivo sair.jpg n�o foi encontrado",
-              "Arquivo de imagem ausente",
-              JOptionPane.WARNING_MESSAGE
+        null,
+        "Arquivo sair.jpg n�o foi encontrado",
+        "Arquivo de imagem ausente",
+        JOptionPane.WARNING_MESSAGE
       );
     }
 
@@ -374,6 +373,44 @@ public class Janela extends JFrame {
         } catch (Exception ex) {
           ex.printStackTrace();
         }
+      } else if (esperaInicioPoligono) {
+        linhasTotal = 0;
+        linhasTotal++;
+        linhasX.add(e.getX());
+        linhasY.add(e.getY());
+        esperaFimPoligono = true;
+        esperaInicioPoligono = false;
+        statusBar1.setText("Mensagem: clique nos vértices para criar um polígono e para terminar clique com o botão direito");
+      } else if (e.getButton() != MouseEvent.BUTTON3 && esperaFimPoligono) {
+        linhasTotal++;
+        linhasX.add(e.getX());
+        linhasY.add(e.getY());
+        int[] arrayX = new int[linhasX.size()];
+        int[] arrayY = new int[linhasY.size()];
+        for (int i = 0; i < linhasX.size(); i++) arrayX[i] = linhasX.get(i);
+        for (int i = 0; i < linhasY.size(); i++) arrayY[i] = linhasY.get(i);
+        pnlDesenho.getGraphics().drawPolyline(arrayX, arrayY, linhasTotal);
+        for (int i = 0; i + 1 < linhasX.size(); i++) {
+          linhasProv.add(new Linha(linhasX.get(i), linhasY.get(i), linhasX.get(i + 1), linhasY.get(i + 1), corContorno));
+        }
+      } else if (e.getButton() == MouseEvent.BUTTON3 && esperaFimPoligono) {
+        linhasProv.clear();
+        esperaFimPoligono = false;
+        linhasTemporarias = 0;
+        esperaInicioPoligono = true;
+        int[] arrayX = new int[linhasX.size()];
+        int[] arrayY = new int[linhasY.size()];
+        for (int i = 0; i < linhasX.size(); i++) arrayX[i] = linhasX.get(i);
+        for (int i = 0; i < linhasY.size(); i++) arrayY[i] = linhasY.get(i);
+        figuras.add(new Poligono(arrayX, arrayY, linhasTotal, corContorno, corPreenchimento));
+        pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+        figuras.remove(figuras.size() - 2);
+        for (Figura figura : figuras) {
+          figura.torneSeVisivel(pnlDesenho.getGraphics());
+        }
+        linhasX.clear();
+        linhasY.clear();
+        statusBar1.setText("Mensagem: ");
       }
     }
 
@@ -463,6 +500,23 @@ public class Janela extends JFrame {
         if (linhasTemporarias > 1) {
           pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
           figuras.remove(figuras.size() - 2);
+          for (Figura figura : figuras) {
+            figura.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+        }
+      } else if (esperaFimPoligono) {
+        Linha novaLinha = new Linha(
+          linhasX.get(linhasX.size() - 1), linhasY.get(linhasY.size() - 1), e.getX(), e.getY(), corContorno
+        );
+        linhasTemporarias++;
+        figuras.add(novaLinha);
+        if (linhasTemporarias > 1) {
+          pnlDesenho.getGraphics().clearRect(0, 0, pnlDesenho.getWidth(), pnlDesenho.getHeight());
+          for (Figura linha : linhasProv) {
+            linha.torneSeVisivel(pnlDesenho.getGraphics());
+          }
+          figuras.remove(figuras.size() - 2);
+          linhasTemporarias--;
           for (Figura figura : figuras) {
             figura.torneSeVisivel(pnlDesenho.getGraphics());
           }
@@ -584,6 +638,8 @@ public class Janela extends JFrame {
       esperaFimQuadrado = false;
       esperaInicioRetangulo = true;
       esperaFimRetangulo = false;
+      esperaInicioPoligono = false;
+      esperaFimPoligono = false;
 
       statusBar1.setText("Mensagem: clique no canto superior esquerdo do retangulo");
     }
@@ -605,28 +661,7 @@ public class Janela extends JFrame {
       esperaInicioPoligono = true;
       esperaFimPoligono = false;
 
-      statusBar1.setText("Mensagem: clique no canto superior esquerdo do retangulo");
-    }
-  }
-
-  protected class EscreveTexto implements ActionListener {
-    public void actionPerformed(ActionEvent e) {
-      esperaPonto = false;
-      esperaInicioReta = false;
-      esperaFimReta = false;
-      esperaCentro = false;
-      esperaRaio = false;
-      esperaInicioElipse = false;
-      esperaFimElipse = false;
-      esperaInicioQuadrado = false;
-      esperaFimQuadrado = false;
-      esperaInicioRetangulo = false;
-      esperaFimRetangulo = false;
-      esperaInicioPoligono = false;
-      esperaFimPoligono = false;
-      esperaTexto = true;
-
-      statusBar1.setText("Mensagem: digite o texto");
+      statusBar1.setText("Mensagem: clique no ponto inicial do polígono");
     }
   }
 
